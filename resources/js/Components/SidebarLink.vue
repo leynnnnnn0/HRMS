@@ -10,10 +10,6 @@ defineProps({
        type: String,
         required: true
     },
-    route: {
-       type: String,
-        required: true,
-    },
     alt: {
        type: String,
         default: "icon"
@@ -27,8 +23,7 @@ defineProps({
 </script>
 
 <template>
-    <Link :href="route"
-          :class="{ 'border-l-2 border-primary bg-gray/10 text-primary font-bold' : active }"
+    <Link :class="{ 'border-l-2 border-primary bg-gray/10 text-primary font-bold' : active }"
           class="flex items-center h-12 rounded-r-lg p-5 gap-3 text-primary-font">
         <img :src="active ? activeIcon : icon"
              :alt="alt">

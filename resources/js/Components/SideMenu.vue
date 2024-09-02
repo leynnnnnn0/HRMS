@@ -25,11 +25,11 @@ const isActive = (route) => {
             <SidebarLink :active="isActive('/dashboard')"
                          :icon="dashboard"
                          :activeIcon="activeDashboard"
-                         route="">Dashboard</SidebarLink>
-            <SidebarLink :active="isActive('/all-employees')"
+                         :href="route('dashboard')">Dashboard</SidebarLink>
+            <SidebarLink :active="isActive('/employees')"
                          :icon="allEmployees"
                          :activeIcon="activeAllEmployees"
-                         route="">All Employees</SidebarLink>
+                         :href="route('employees.index')">All Employees</SidebarLink>
         </DivFlexCol>
     </div>
 </template>

@@ -18,7 +18,6 @@ export default {
             colors: {
                 'primary': '#7152F3',
                 'primary-font': '#16151C',
-                'gray': '#A2A1A8'
             }
         },
     },

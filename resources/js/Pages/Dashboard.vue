@@ -1,11 +1,13 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
 import MainLayout from "@/Layouts/MainLayout.vue";
+import Header from "@/Components/Header.vue";
 </script>
 
 <template>
     <MainLayout>
+        <Header heading="Hello Andrew" subheading="Good Morning"/>
+        <section class="flex-1">
 
+        </section>
     </MainLayout>
 </template>

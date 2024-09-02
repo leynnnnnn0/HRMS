@@ -6,16 +6,27 @@ import notification from "@/Images/Icons/notification.svg";
 import IconButton from "@/Components/IconButton.vue";
 import profile from "@/Images/Profile/Profile.png";
 import dropDown from "@/Images/Icons/dropDown.svg";
+
+defineProps({
+    heading: {
+        type: String,
+        required: true
+    },
+    subheading: {
+        type: String,
+        required: true
+    },
+})
 </script>
 
 <template>
     <DivFlexCenter class="justify-between w-full">
         <DivFlexCol>
             <span class="text-lg font-bold">
-                Hello Robert
+                {{ heading}}
             </span>
             <span class="text-xs text-black/50">
-                Good Morning
+                {{subheading}}
             </span>
         </DivFlexCol>
         <DivFlexCenter class="gap-2">
