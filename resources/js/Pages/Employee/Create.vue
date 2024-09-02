@@ -13,7 +13,6 @@ import ProfessionalInformation from "@/Pages/Employee/Partials/ProfessionalInfor
 import {ref} from "vue";
 import PersonalInformation from "@/Pages/Employee/Partials/PersonalInformation.vue";
 import AccountAccess from "@/Pages/Employee/Partials/AccountAccess.vue";
-import PrimaryTransparentButton from "@/Components/PrimaryTransparentButton.vue";
 import ButtonLink from "@/Components/ButtonLink.vue";
 
 const stepCount = ref(1);
