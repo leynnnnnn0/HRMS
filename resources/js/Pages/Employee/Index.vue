@@ -6,7 +6,7 @@ import DivFlexCenter from "@/Components/Divs/DivFlexCenter.vue";
 import plusCircle from "@/Images/Icons/plusCircle.svg";
 import filter from "@/Images/Icons/filter.svg";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TransparentButton from "@/Components/TransparentButton.vue";
+import TransparentButton from "@/Components/PrimaryTransparentButton.vue";
 import TH from "@/Components/Table/TH.vue";
 import TD from "@/Components/Table/TD.vue";
 import profile from "@/Images/Profile/Profile.png";
@@ -15,6 +15,7 @@ import IconButton from "@/Components/IconButton.vue";
 import view from "@/Images/Icons/view.svg";
 import trash from "@/Images/Icons/trash.svg";
 import edit from "@/Images/Icons/edit.svg";
+import PrimaryButtonLink from "@/Components/PrimaryButtonLink.vue";
 
 </script>
 
@@ -24,11 +25,11 @@ import edit from "@/Images/Icons/edit.svg";
         <section class="flex-1">
             <DivFlexCol class="p-5 w-full h-full rounded-lg border border-gray/20 space-y-5">
                 <DivFlexCenter class="justify-between">
-                    <input type="text" placeholder="Search..." class="w-96 rounded-lg border-gray/15">
+                    <input type="text" placeholder="Search..." class="w-96 rounded-lg border-gray-200">
                     <DivFlexCenter class="gap-5">
-                        <PrimaryButton :icon="plusCircle">
+                        <PrimaryButtonLink :href="route('employees.create')" :icon="plusCircle">
                             Add New Employee
-                        </PrimaryButton>
+                        </PrimaryButtonLink>
                         <TransparentButton :icon="filter">
                             Filter
                         </TransparentButton>

@@ -10,7 +10,7 @@ import activeDashboard from "@/Images/Icons/activeDashboard.svg";
 import {usePage} from "@inertiajs/vue3";
 
 const isActive = (route) => {
-    return route === usePage().url;
+    return usePage().url.includes(route);
 }
 
 </script>

@@ -10,4 +10,9 @@ class EmployeeController extends Controller
    {
        return inertia('Employee/Index');
    }
+
+   public function create()
+   {
+       return inertia('Employee/Create');
+   }
 }
