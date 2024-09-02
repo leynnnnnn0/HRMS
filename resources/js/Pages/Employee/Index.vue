@@ -5,7 +5,6 @@ import DivFlexCol from "@/Components/Divs/DivFlexCol.vue";
 import DivFlexCenter from "@/Components/Divs/DivFlexCenter.vue";
 import plusCircle from "@/Images/Icons/plusCircle.svg";
 import filter from "@/Images/Icons/filter.svg";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TransparentButton from "@/Components/PrimaryTransparentButton.vue";
 import TH from "@/Components/Table/TH.vue";
 import TD from "@/Components/Table/TD.vue";
@@ -16,6 +15,7 @@ import view from "@/Images/Icons/view.svg";
 import trash from "@/Images/Icons/trash.svg";
 import edit from "@/Images/Icons/edit.svg";
 import PrimaryButtonLink from "@/Components/PrimaryButtonLink.vue";
+import { Link } from "@inertiajs/vue3";
 
 </script>
 
@@ -64,7 +64,9 @@ import PrimaryButtonLink from "@/Components/PrimaryButtonLink.vue";
                         <TD>Team Allan</TD>
                         <TD>
                             <DivFlexCenter class="gap-2 w-fit">
-                                <IconButton class="bg-transparent" :icon="view"/>
+                                <Link :href="route('employees.show', 1)">
+                                    <IconButton class="bg-transparent" :icon="view"/>
+                                </Link>
                                 <IconButton class="bg-transparent" :icon="edit"/>
                                 <IconButton class="bg-transparent" :icon="trash"/>
                             </DivFlexCenter>

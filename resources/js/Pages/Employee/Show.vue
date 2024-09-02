@@ -6,7 +6,7 @@ import DivFlexCenter from "@/Components/Divs/DivFlexCenter.vue";
 import Span from "@/Components/Text/Span.vue";
 import profile from "@/Images/Profile/Profile.png";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import edit from "@/Images/Icons/edit.svg";
+import editPlain from "@/Images/Icons/editPlain.svg";
 import userPlain from "@/Images/Icons/userPlain.svg";
 import briefcase from "@/Images/Icons/briefcase.svg";
 import lock from "@/Images/Icons/lock.svg";
@@ -15,12 +15,17 @@ import {ref} from "vue";
 import PersonalInformationView from "@/Pages/Employee/Partials/PersonalInformationView.vue";
 import ProfessionalInformationView from "@/Pages/Employee/Partials/ProfessionalInformationView.vue";
 import AccountAccessView from "@/Pages/Employee/Partials/AccountAccessView.vue";
+import TransparentButton from "@/Components/TransparentButton.vue";
+import Button from "@/Components/Button.vue";
 
 
 const stepCount = ref(1);
 const isActive = (display) => {
     return stepCount.value === display;
 }
+
+const editProfile = ref(false);
+
 
 </script>
 
@@ -38,7 +43,11 @@ const isActive = (display) => {
                             <Span class="text-xl">brooklyn@hrms.com</Span>
                         </DivFlexCol>
                     </DivFlexCenter>
-                    <PrimaryButton :icon="edit">Edit Profile</PrimaryButton>
+                    <PrimaryButton v-if="!editProfile" @click="editProfile = true" :icon="editPlain">Edit Profile</PrimaryButton>
+                    <DivFlexCenter v-if="editProfile" class="gap-3">
+                        <TransparentButton @click="editProfile = false">Cancel</TransparentButton>
+                        <Button>Save Changes</Button>
+                    </DivFlexCenter>
                 </DivFlexCenter>
 
                 <div class="flex h-full gap-5">
@@ -60,9 +69,9 @@ const isActive = (display) => {
                             </PrimaryButton>
                         </DivFlexCenter>
 
-                        <PersonalInformationView v-if="stepCount === 1"/>
-                        <ProfessionalInformationView v-if="stepCount === 2"/>
-                        <AccountAccessView v-if="stepCount === 3"/>
+                        <PersonalInformationView :edit="editProfile" v-if="stepCount === 1"/>
+                        <ProfessionalInformationView :edit="editProfile" v-if="stepCount === 2"/>
+                        <AccountAccessView :edit="editProfile" v-if="stepCount === 3"/>
                     </DivFlexCol>
                 </div>
             </DivFlexCol>
