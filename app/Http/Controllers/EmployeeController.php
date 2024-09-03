@@ -50,4 +50,9 @@ class EmployeeController extends Controller
        $employee->delete();
        return to_route('employees.index');
    }
+
+   public function update(Request $request, Employee $employee)
+   {
+
+   }
 }

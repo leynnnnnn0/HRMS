@@ -11,7 +11,7 @@ import userPlain from "@/Images/Icons/userPlain.svg";
 import briefcase from "@/Images/Icons/briefcase.svg";
 import lock from "@/Images/Icons/lock.svg";
 import user from "@/Images/Icons/user.svg";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import PersonalInformationView from "@/Pages/Employee/Partials/PersonalInformationView.vue";
 import ProfessionalInformationView from "@/Pages/Employee/Partials/ProfessionalInformationView.vue";
 import AccountAccessView from "@/Pages/Employee/Partials/AccountAccessView.vue";
@@ -19,14 +19,23 @@ import TransparentButton from "@/Components/TransparentButton.vue";
 import Button from "@/Components/Button.vue";
 import ButtonLink from "@/Components/ButtonLink.vue";
 import {usePage} from "@inertiajs/vue3";
+import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
 
-
+const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
 const stepCount = ref(1);
 const isActive = (display) => {
     return stepCount.value === display;
 }
 const editProfile = ref(false);
 const employee = usePage().props.employee.data;
+
+watch(editProfile, () => {
+    Object.assign(personalInformationFormData.value, employee)
+    Object.assign(professionalInformationFormData.value, employee.employment)
+    Object.assign(accountAccessFormData.value, employee.access)
+}, {immediate: true});
+
+
 
 </script>
 
@@ -73,9 +82,16 @@ const employee = usePage().props.employee.data;
                             </PrimaryButton>
                         </DivFlexCenter>
 
-                        <PersonalInformationView :personalInformation="employee" :edit="editProfile" v-if="stepCount === 1"/>
-                        <ProfessionalInformationView :professionalInformation="employee.employment" :edit="editProfile" v-if="stepCount === 2"/>
-                        <AccountAccessView :accountAccess="employee.access" :edit="editProfile" v-if="stepCount === 3"/>
+                        <PersonalInformationView
+                                                 :personalInformationForm="personalInformationFormData"
+                                                 :edit="editProfile"
+                                                 v-if="stepCount === 1"/>
+                        <ProfessionalInformationView :professionalInformationForm="professionalInformationFormData"
+                                                     :edit="editProfile"
+                                                     v-if="stepCount === 2"/>
+                        <AccountAccessView :accountAccessForm="accountAccessFormData"
+                                           :edit="editProfile"
+                                           v-if="stepCount === 3"/>
                     </DivFlexCol>
                 </div>
             </DivFlexCol>
