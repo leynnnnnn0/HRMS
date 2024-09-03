@@ -5,11 +5,16 @@ import DivFlexCol from "@/Components/Divs/DivFlexCol.vue";
 import Label from "@/Components/Form/Label.vue";
 
 defineProps({
+    form: {
+        type: Object,
+        required: true
+    },
     edit: {
         type: Boolean,
         default: false
     }
 })
+
 </script>
 
 <template>

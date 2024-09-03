@@ -17,6 +17,7 @@ import ProfessionalInformationView from "@/Pages/Employee/Partials/ProfessionalI
 import AccountAccessView from "@/Pages/Employee/Partials/AccountAccessView.vue";
 import TransparentButton from "@/Components/TransparentButton.vue";
 import Button from "@/Components/Button.vue";
+import ButtonLink from "@/Components/ButtonLink.vue";
 
 
 const stepCount = ref(1);
@@ -43,7 +44,10 @@ const editProfile = ref(false);
                             <Span class="text-xl">brooklyn@hrms.com</Span>
                         </DivFlexCol>
                     </DivFlexCenter>
-                    <PrimaryButton v-if="!editProfile" @click="editProfile = true" :icon="editPlain">Edit Profile</PrimaryButton>
+                    <DivFlexCenter v-if="!editProfile" class="gap-3">
+                        <ButtonLink :href="route('employees.index')">Back to Table</ButtonLink>
+                        <PrimaryButton v-if="!editProfile" @click="editProfile = true" :icon="editPlain">Edit Profile</PrimaryButton>
+                    </DivFlexCenter>
                     <DivFlexCenter v-if="editProfile" class="gap-3">
                         <TransparentButton @click="editProfile = false">Cancel</TransparentButton>
                         <Button>Save Changes</Button>

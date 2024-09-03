@@ -1,11 +1,39 @@
 <script setup>
 
-import InputWithLabel from "@/Components/Form/InputWithLabel.vue";
+import Input from "@/Components/Form/Input.vue";
+import Label from "@/Components/Form/Label.vue";
+import InputDiv from "@/Components/Form/InputDiv.vue";
+import {watch} from "vue";
+import Error from "@/Components/Form/Error.vue";
+
+const props = defineProps({
+    formData: {
+        type: Object,
+        required: true
+    },
+    formErrors: {
+        type: Object,
+        required: true
+    },
+})
+
+const emit = defineEmits(['formUpdate']);
+watch(props.formData, (newValue) => {
+    emit('formUpdate', newValue);
+}, {deep: true})
 </script>
 
 <template>
     <div class="grid grid-cols-2 gap-5">
-        <InputWithLabel label="Access Email"/>
-        <InputWithLabel label="Access Password"/>
+        <InputDiv>
+            <Label>Access Email*</Label>
+            <Input v-model="formData.accessEmail"/>
+            <Error v-if="formErrors.accessEmail">{{ formErrors.accessEmail[0]}}</Error>
+        </InputDiv>
+        <InputDiv>
+            <Label>Access Password*</Label>
+            <Input v-model="formData.accessPassword"/>
+            <Error v-if="formErrors.accessPassword">{{ formErrors.accessPassword[0]}}</Error>
+        </InputDiv>
     </div>
 </template>

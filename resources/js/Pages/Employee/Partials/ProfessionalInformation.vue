@@ -1,42 +1,69 @@
 <script setup>
-
-import camera from "@/Images/Icons/camera.svg";
-import IconButton from "@/Components/IconButton.vue";
-import TransparentButton from "@/Components/TransparentButton.vue";
-import Button from "@/Components/Button.vue";
 import Input from "@/Components/Form/Input.vue";
-import InputWithLabel from "@/Components/Form/InputWithLabel.vue";
-import DivFlexCol from "@/Components/Divs/DivFlexCol.vue";
 import Label from "@/Components/Form/Label.vue";
 import Select from "@/Components/Form/Select.vue";
+import InputDiv from "@/Components/Form/InputDiv.vue";
+import {watch} from "vue";
+import Error from "@/Components/Form/Error.vue";
+
+const props = defineProps({
+    formData: {
+        type: Object,
+        required: true
+    },
+    formErrors: {
+        type: Object,
+        required: true
+    },
+})
+const emit = defineEmits(['formUpdate']);
+watch(props.formData, (newValue) => {
+    emit('formUpdate', newValue);
+}, {deep: true})
+
 </script>
 
 <template>
     <div class="grid grid-cols-2 gap-5">
-        <InputWithLabel label="Joining Date*" type="date"/>
-        <DivFlexCol class="gap-1">
+        <InputDiv>
+            <Label>Joining Date*</Label>
+            <Input v-model="formData.joiningDate" type="date"/>
+            <Error v-if="formErrors.joiningDate">{{ formErrors.joiningDate[0]}}</Error>
+        </InputDiv>
+        <InputDiv>
             <Label>Department</Label>
-            <Select>
-
+            <Select v-model="formData.department">
+                <option value="HR">HR</option>
+                <option value="Design">Design</option>
+                <option value="Developer">Developer</option>
             </Select>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+            <Error v-if="formErrors.department">{{ formErrors.department[0]}}</Error>
+        </InputDiv>
+        <InputDiv>
             <Label>Position</Label>
-            <Select>
-
+            <Select v-model="formData.position">
+                <option value="Admin">Admin</option>
+                <option value="UI Designer">UI Designer</option>
+                <option value="Web Developer">Web Developer</option>
             </Select>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+            <Error v-if="formErrors.position">{{ formErrors.position[0]}}</Error>
+        </InputDiv>
+        <InputDiv>
             <Label>Team</Label>
-            <Select>
-
+            <Select v-model="formData.team">
+                <option value="Allan">Allan</option>
+                <option value="Jay">Jay</option>
             </Select>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
-            <Label>Schedule</Label>
-            <Select>
-
+            <Error v-if="formErrors.team">{{ formErrors.team[0]}}</Error>
+        </InputDiv>
+        <InputDiv>
+            <Label>Rate per hour</Label>
+            <Select v-model="formData.ratePerHour">
+                <option value="5">5</option>
+                <option value="7">7</option>
+                <option value="10">10</option>
             </Select>
-        </DivFlexCol>
+            <Error v-if="formErrors.ratePerHour">{{ formErrors.ratePerHour[0]}}</Error>
+        </InputDiv>
     </div>
 </template>

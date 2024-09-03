@@ -8,24 +8,54 @@ import user from "@/Images/Icons/user.svg";
 import briefcase from "@/Images/Icons/briefcase.svg";
 import lock from "@/Images/Icons/lock.svg";
 import Button from "@/Components/Button.vue";
-import TransparentButton from "@/Components/TransparentButton.vue";
 import ProfessionalInformation from "@/Pages/Employee/Partials/ProfessionalInformation.vue";
 import {ref} from "vue";
 import PersonalInformation from "@/Pages/Employee/Partials/PersonalInformation.vue";
 import AccountAccess from "@/Pages/Employee/Partials/AccountAccess.vue";
 import ButtonLink from "@/Components/ButtonLink.vue";
+import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
+import {router, useRemember} from "@inertiajs/vue3";
 
+const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
 const stepCount = ref(1);
+const formErrors = useRemember({});
 const isActive = (display) => {
     return stepCount.value === display;
 }
-
 const next = () => {
-    if(stepCount.value < 3) stepCount.value = stepCount.value + 1;
-    console.log(stepCount.value)
+    if(stepCount.value === 1)
+        validateInputs('/api/personal-information/store', personalInformationFormData, formErrors);
+    if(stepCount.value === 2)
+        validateInputs('/api/professional-information/store', professionalInformationFormData, formErrors);
+    if(stepCount.value === 3)
+        validateInputs('/api/account-access/store', accountAccessFormData, formErrors);
 }
 
-
+const validateInputs = (url, data, errorsForm) => {
+    axios.post(url, data.value)
+        .then(response => {
+            if(response.data.success){
+                stepCount.value = stepCount.value + 1
+                errorsForm.value = {};
+            }
+        })
+        .catch(err => {
+            if(err.response.data.errors){
+                errorsForm.value = err.response.data.errors
+            }
+        });
+}
+const createEmployee = () => {
+    const data =  {
+        ...personalInformationFormData.value,
+        ...professionalInformationFormData.value,
+        ...accountAccessFormData.value
+    }
+    router.post(route('employees.store'), data,{
+        onSuccess: page => console.log(page),
+        onError: errors => console.log(errors)
+    })
+}
 </script>
 
 <template>
@@ -44,13 +74,13 @@ const next = () => {
                           <span class="text-primary-font" :class="{'border-b-2 border-primary' : isActive(3)}">Account Access</span>
                       </PrimaryButton>
                 </DivFlexCenter>
-                <PersonalInformation v-if="stepCount === 1"/>
-                <ProfessionalInformation v-if="stepCount === 2"/>
-                <AccountAccess v-if="stepCount === 3"/>
+                <PersonalInformation :formData="personalInformationFormData" :formErrors="formErrors" v-if="stepCount === 1"/>
+                <ProfessionalInformation :formData="professionalInformationFormData" :formErrors="formErrors" v-if="stepCount === 2"/>
+                <AccountAccess :formData="accountAccessFormData" :formErrors="formErrors" v-if="stepCount === 3"/>
                 <div class="flex h-full justify-end items-center gap-2 col-span-2">
                     <ButtonLink :href="route('employees.index')">Cancel</ButtonLink>
-                    <Button v-if="stepCount < 3" @click="next">Next</Button>
-                    <Button v-if="stepCount === 3">Add</Button>
+                    <Button v-if="stepCount < 4" @click="next">Next</Button>
+                    <Button v-if="stepCount === 4" @click="createEmployee">Add</Button>
                 </div>
             </DivFlexCol>
         </section>
