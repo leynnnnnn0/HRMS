@@ -15,7 +15,10 @@ import view from "@/Images/Icons/view.svg";
 import trash from "@/Images/Icons/trash.svg";
 import edit from "@/Images/Icons/edit.svg";
 import PrimaryButtonLink from "@/Components/PrimaryButtonLink.vue";
-import { Link } from "@inertiajs/vue3";
+import {Link, usePage} from "@inertiajs/vue3";
+
+const employees = usePage().props.employees;
+
 
 </script>
 
@@ -47,49 +50,26 @@ import { Link } from "@inertiajs/vue3";
                     </tr>
                     </thead>
                     <tbody class="divide-y">
-                    <tr>
+                    <tr v-for="employee in employees.data">
                         <TD>
                             <DivFlexCenter class="gap-3">
                                 <img class="size-10 rounded-full" :src="profile" alt="profile">
                                 <DivFlexCol>
-                                    Darlene Robertson
+                                    {{ employee.fullName }}
                                     <Span>
-                                        ID: 134354
+                                        ID: {{ employee.id }}
                                     </Span>
                                 </DivFlexCol>
                             </DivFlexCenter>
                         </TD>
-                        <TD>Development</TD>
-                        <TD>Web Developer</TD>
-                        <TD>Team Allan</TD>
+                        <TD>{{ employee.employment.department }}</TD>
+                        <TD>{{ employee.employment.position }}</TD>
+                        <TD>Team {{ employee.employment.team }}</TD>
                         <TD>
                             <DivFlexCenter class="gap-2 w-fit">
                                 <Link :href="route('employees.show', 1)">
                                     <IconButton class="bg-transparent" :icon="view"/>
                                 </Link>
-                                <IconButton class="bg-transparent" :icon="edit"/>
-                                <IconButton class="bg-transparent" :icon="trash"/>
-                            </DivFlexCenter>
-                        </TD>
-                    </tr>
-                    <tr>
-                        <TD>
-                            <DivFlexCenter class="gap-3">
-                                <img class="size-10 rounded-full" :src="profile" alt="profile">
-                                <DivFlexCol>
-                                    Darlene Robertson
-                                    <Span>
-                                        ID: 134354
-                                    </Span>
-                                </DivFlexCol>
-                            </DivFlexCenter>
-                        </TD>
-                        <TD>Development</TD>
-                        <TD>Web Developer</TD>
-                        <TD>Team Allan</TD>
-                        <TD>
-                            <DivFlexCenter class="gap-2 w-fit">
-                                <IconButton class="bg-transparent" :icon="view"/>
                                 <IconButton class="bg-transparent" :icon="edit"/>
                                 <IconButton class="bg-transparent" :icon="trash"/>
                             </DivFlexCenter>

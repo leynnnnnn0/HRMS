@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Api\StoreEmployeeAccountAccessRequest;
 use App\Http\Requests\Api\StoreEmployeePersonalInformationRequest;
 use App\Http\Requests\Api\StoreEmployeeProfessionalInformationRequest;
+use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,9 @@ class EmployeeController extends Controller
 {
    public function index()
    {
-       return inertia('Employee/Index');
+       return inertia('Employee/Index', [
+           'employees' => EmployeeResource::collection(Employee::all())
+       ]);
    }
 
    public function create()
