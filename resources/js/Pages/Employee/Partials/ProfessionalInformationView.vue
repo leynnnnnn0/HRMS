@@ -3,8 +3,13 @@ import Input from "@/Components/Form/Input.vue";
 import DivFlexCol from "@/Components/Divs/DivFlexCol.vue";
 import Label from "@/Components/Form/Label.vue";
 import Select from "@/Components/Form/Select.vue";
+import InputDiv from "@/Components/Form/InputDiv.vue";
 
 defineProps({
+    professionalInformation: {
+        type: Object,
+        required: true
+    },
     edit: {
         type: Boolean,
         default: false
@@ -15,33 +20,40 @@ defineProps({
 
 <template>
     <div class="grid grid-cols-2 gap-5">
-        <DivFlexCol class="gap-1">
+        <InputDiv>
             <Label>Joining Date</Label>
-            <Input value="2024-08-21" type="date" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+            <Input :value="professionalInformation.joiningDate" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
+        </InputDiv>
+        <InputDiv>
             <Label>Department</Label>
-            <Select :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit" value="Web Developer">
-                <option value="Web Developer">Web Developer</option>
+            <Select :value="professionalInformation.department" :model-value="professionalInformation.department" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit">
+                <option value="HR">HR</option>
+                <option value="Design">Design</option>
+                <option value="Developer">Developer</option>
             </Select>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+        </InputDiv>
+        <InputDiv>
             <Label>Position</Label>
-            <Select :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit" value="Web Developer">
+            <Select :value="professionalInformation.position" :model-value="professionalInformation.position" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit">
+                <option value="Admin">Admin</option>
+                <option value="UI Designer">UI Designer</option>
                 <option value="Web Developer">Web Developer</option>
             </Select>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+        </InputDiv>
+        <InputDiv>
             <Label>Team</Label>
-            <Select :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit" value="Web Developer">
-                <option value="Web Developer">Web Developer</option>
+            <Select :value="professionalInformation.team" :model-value="professionalInformation.position" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit">
+                <option value="Allan">Allan</option>
+                <option value="Jay">Jay</option>
             </Select>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
-            <Label>Schedule</Label>
-            <Select :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit" value="Web Developer">
-                <option value="Web Developer">Web Developer</option>
+        </InputDiv>
+        <InputDiv>
+            <Label>Rate per hour</Label>
+            <Select :value="professionalInformation.ratePerHour" :model-value="professionalInformation.position" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit">
+                <option value="5">5</option>
+                <option value="7">7</option>
+                <option value="10">10</option>
             </Select>
-        </DivFlexCol>
+        </InputDiv>
     </div>
 </template>

@@ -38,8 +38,10 @@ class EmployeeController extends Controller
        ]);
    }
 
-   public function show()
+   public function show(Employee $employee)
    {
-       return inertia('Employee/Show');
+       return inertia('Employee/Show', [
+           'employee' => new EmployeeResource($employee)
+       ]);
    }
 }

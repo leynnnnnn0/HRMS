@@ -14,6 +14,12 @@ class EmploymentDetailResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'joiningDate' => $this->joiningDate,
+            'department' => $this->department,
+            'position' => $this->position,
+            'team' => $this->team,
+            'ratePerHour' => $this->ratePerHour
+        ];
     }
 }

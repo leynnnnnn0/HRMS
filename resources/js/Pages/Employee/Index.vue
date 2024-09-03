@@ -67,7 +67,7 @@ const employees = usePage().props.employees;
                         <TD>Team {{ employee.employment.team }}</TD>
                         <TD>
                             <DivFlexCenter class="gap-2 w-fit">
-                                <Link :href="route('employees.show', 1)">
+                                <Link :href="route('employees.show', employee.id)">
                                     <IconButton class="bg-transparent" :icon="view"/>
                                 </Link>
                                 <IconButton class="bg-transparent" :icon="edit"/>

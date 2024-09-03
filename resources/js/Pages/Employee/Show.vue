@@ -18,15 +18,15 @@ import AccountAccessView from "@/Pages/Employee/Partials/AccountAccessView.vue";
 import TransparentButton from "@/Components/TransparentButton.vue";
 import Button from "@/Components/Button.vue";
 import ButtonLink from "@/Components/ButtonLink.vue";
+import {usePage} from "@inertiajs/vue3";
 
 
 const stepCount = ref(1);
 const isActive = (display) => {
     return stepCount.value === display;
 }
-
 const editProfile = ref(false);
-
+const employee = usePage().props.employee.data;
 
 </script>
 
@@ -73,9 +73,9 @@ const editProfile = ref(false);
                             </PrimaryButton>
                         </DivFlexCenter>
 
-                        <PersonalInformationView :edit="editProfile" v-if="stepCount === 1"/>
-                        <ProfessionalInformationView :edit="editProfile" v-if="stepCount === 2"/>
-                        <AccountAccessView :edit="editProfile" v-if="stepCount === 3"/>
+                        <PersonalInformationView :personalInformation="employee" :edit="editProfile" v-if="stepCount === 1"/>
+                        <ProfessionalInformationView :professionalInformation="employee.employment" :edit="editProfile" v-if="stepCount === 2"/>
+                        <AccountAccessView :accountAccess="employee.access" :edit="editProfile" v-if="stepCount === 3"/>
                     </DivFlexCol>
                 </div>
             </DivFlexCol>

@@ -1,13 +1,15 @@
 <script setup>
 
 import Input from "@/Components/Form/Input.vue";
-import DivFlexCol from "@/Components/Divs/DivFlexCol.vue";
 import Label from "@/Components/Form/Label.vue";
+import InputDiv from "@/Components/Form/InputDiv.vue";
+import Error from "@/Components/Form/Error.vue";
+import Select from "@/Components/Form/Select.vue";
 
 defineProps({
-    form: {
-        type: Object,
-        required: true
+    personalInformation: {
+      type: Object,
+      required: true
     },
     edit: {
         type: Boolean,
@@ -19,50 +21,53 @@ defineProps({
 
 <template>
     <div class="grid grid-cols-2 gap-5">
-        <DivFlexCol class="gap-1">
+        <InputDiv>
             <Label>First Name</Label>
-            <Input value="Brooklyn" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+            <Input :value="personalInformation.firstName" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
+        </InputDiv>
+        <InputDiv>
             <Label>Middle Name</Label>
-            <Input value="Mariano" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+            <Input :value="personalInformation.middleName" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
+        </InputDiv>
+        <InputDiv>
             <Label>Last Name</Label>
-            <Input value="Simmons" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+            <Input :value="personalInformation.lastName" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
+        </InputDiv>
+        <InputDiv>
             <Label>Gender</Label>
-            <Input value="Male" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+            <Select :value="personalInformation.gender" :model-value="personalInformation.gender" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </Select>
+        </InputDiv>
+        <InputDiv>
             <Label>Date of Birth</Label>
-            <Input value="08/19/2004" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+            <Input :value="personalInformation.dateOfBirth" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
+        </InputDiv>
+        <InputDiv>
             <Label>Email</Label>
-            <Input value="brooklyn@hrms.com" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+            <Input :value="personalInformation.email" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
+        </InputDiv>
+        <InputDiv>
             <Label>Phone Number</Label>
-            <Input value="094324234234" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+            <Input :value="personalInformation.phoneNumber"  :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
+        </InputDiv>
+        <InputDiv>
             <Label>Street Address</Label>
-            <Input value="Gatchalian Subdivision" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+            <Input :value="personalInformation.streetAddress" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
+        </InputDiv>
+        <InputDiv>
             <Label>Municipality</Label>
-            <Input value="Paranaque" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+            <Input :value="personalInformation.municipality" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
+        </InputDiv>
+        <InputDiv>
             <Label>Postal Code</Label>
-            <Input value="4104" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
-        </DivFlexCol>
-        <DivFlexCol class="gap-1">
+            <Input :value="personalInformation.postalCode" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
+        </InputDiv>
+        <InputDiv>
             <Label>City/Province</Label>
-            <Input value="Manila" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
-        </DivFlexCol>
+            <Input :value="personalInformation.cityOrProvince" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
+        </InputDiv>
     </div>
 </template>
 
