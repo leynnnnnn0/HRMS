@@ -43,15 +43,6 @@ export function useEmployeeForm(){
     }, 'AccountAccess');
 
 
-    // const updateForm = (formData, newValue) => {
-    //     setFormValues(formData, newValue);
-    // }
-    // const setFormValues = (form, values) => {
-    //     Object.keys(form.value).forEach(key => {
-    //         form.value[key] = values[key];
-    //     });
-    // }
-
     const generateAccessEmail = () => {
         const { firstName } = personalInformationFormData.value;
         return firstName ? firstName + "@hrms.com" : "";
@@ -70,8 +61,6 @@ export function useEmployeeForm(){
         personalInformationErrors,
         generateAccessEmail,
         generateAccessPassword
-        // updateForm,
-        // setFormValues
     }
 
 }

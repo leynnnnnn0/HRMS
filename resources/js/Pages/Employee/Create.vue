@@ -15,6 +15,7 @@ import AccountAccess from "@/Pages/Employee/Partials/AccountAccess.vue";
 import ButtonLink from "@/Components/ButtonLink.vue";
 import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
 import {router, useRemember} from "@inertiajs/vue3";
+import TransparentButton from "@/Components/TransparentButton.vue";
 
 const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
 const stepCount = ref(1);
@@ -30,6 +31,7 @@ const next = () => {
     if(stepCount.value === 3)
         validateInputs('/api/account-access/store', accountAccessFormData, formErrors);
 }
+
 const validateInputs = (url, data, errorsForm) => {
     axios.post(url, data.value)
         .then(response => {
@@ -39,8 +41,11 @@ const validateInputs = (url, data, errorsForm) => {
             }
         })
         .catch(err => {
-            if(err.response.data.errors){
+            if(err.response){
                 errorsForm.value = err.response.data.errors
+            }
+            else {
+                console.log(err)
             }
         });
 }
@@ -63,13 +68,13 @@ const createEmployee = () => {
         <section class="flex-1">
             <DivFlexCol class="p-5 w-full h-auto rounded-lg border border-gray/20 space-y-5">
                   <DivFlexCenter class="gap-5">
-                      <PrimaryButton @button-click="stepCount = 1" :icon="user" addClass="bg-transparent">
+                      <PrimaryButton :icon="user" addClass="bg-transparent">
                           <span class="text-primary-font" :class="{'border-b-2 border-primary' : isActive(1)}">Personal Information</span>
                       </PrimaryButton>
-                      <PrimaryButton @button-click="stepCount = 2" :icon="briefcase" addClass="bg-transparent">
+                      <PrimaryButton :icon="briefcase" addClass="bg-transparent">
                           <span class="text-primary-font" :class="{'border-b-2 border-primary' : isActive(2)}">Professional Information</span>
                       </PrimaryButton>
-                      <PrimaryButton @button-click="stepCount = 3" :icon="lock" addClass="bg-transparent">
+                      <PrimaryButton :icon="lock" addClass="bg-transparent">
                           <span class="text-primary-font" :class="{'border-b-2 border-primary' : isActive(3)}">Account Access</span>
                       </PrimaryButton>
                 </DivFlexCenter>
@@ -77,9 +82,10 @@ const createEmployee = () => {
                 <ProfessionalInformation :formData="professionalInformationFormData" :formErrors="formErrors" v-if="stepCount === 2"/>
                 <AccountAccess :formData="accountAccessFormData" :formErrors="formErrors" v-if="stepCount === 3"/>
                 <div class="flex h-full justify-end items-center gap-2 col-span-2">
-                    <ButtonLink :href="route('employees.index')">Cancel</ButtonLink>
-                    <Button v-if="stepCount < 4" @click="next">Next</Button>
-                    <Button v-if="stepCount === 4" @click="createEmployee">Add</Button>
+                    <ButtonLink v-if="stepCount === 1" :href="route('employees.index')">Cancel</ButtonLink>
+                    <TransparentButton v-if="stepCount > 1" @click="stepCount = stepCount - 1">Back</TransparentButton>
+                    <Button v-if="stepCount < 3" @click="next">Next</Button>
+                    <Button v-if="stepCount === 3" @click="createEmployee">Add</Button>
                 </div>
             </DivFlexCol>
         </section>

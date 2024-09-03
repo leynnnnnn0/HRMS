@@ -28,7 +28,7 @@ class StoreEmployeePersonalInformationRequest extends FormRequest
             'middleName' => ['nullable', 'string', 'min:2'],
             'lastName' => ['required', 'string', 'min:2'],
             'gender' => ['required', new Enum(Gender::class)],
-            'dateOfBirth' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:' . 'before_or_equal:' . now()->subYears(18)->format('Y-m-d')],
+            'dateOfBirth' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:' . now()->subYears(18)->format('Y-m-d')],
             'email' => ['required', 'string', 'email', 'max:255'],
             'phoneNumber' => ['required', 'regex:/^09\d{9}$/'],
             'municipality' => 'required',
