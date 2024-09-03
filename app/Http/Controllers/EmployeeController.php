@@ -30,8 +30,8 @@ class EmployeeController extends Controller
        $accountAccess = $request->validate((new StoreEmployeeAccountAccessRequest())->rules());
 
        $employee = Employee::create($personalInformation);
-       $employee->employmentDetails()->create($professionalInformation);
-       $employee->accountAccess()->create($accountAccess);
+       $employee->employment()->create($professionalInformation);
+       $employee->access()->create($accountAccess);
 
        return inertia('Employee/Create', [
            'employee' => $employee
@@ -43,5 +43,11 @@ class EmployeeController extends Controller
        return inertia('Employee/Show', [
            'employee' => new EmployeeResource($employee)
        ]);
+   }
+
+   public function destroy(Employee $employee)
+   {
+       $employee->delete();
+       return to_route('employees.index');
    }
 }

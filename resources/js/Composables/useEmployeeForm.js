@@ -45,13 +45,13 @@ export function useEmployeeForm(){
 
     const generateAccessEmail = () => {
         const { firstName } = personalInformationFormData.value;
-        return firstName ? firstName + "@hrms.com" : "";
+        return firstName ? firstName.toLowerCase() + "@hrms.com" : "";
     }
 
     const generateAccessPassword = () => {
         const {lastName, dateOfBirth} = personalInformationFormData.value;
         const birthdayData = dateOfBirth.split('-');
-        return lastName && dateOfBirth ? lastName.concat('.').concat(birthdayData.join('')) : "";
+        return lastName && dateOfBirth ? lastName.toLowerCase().concat('.').concat(birthdayData.join('')) : "";
     }
 
     return {
