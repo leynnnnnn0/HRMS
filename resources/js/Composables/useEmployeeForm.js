@@ -42,6 +42,7 @@ export function useEmployeeForm(){
         accessPassword: ''
     }, 'AccountAccess');
 
+
     // const updateForm = (formData, newValue) => {
     //     setFormValues(formData, newValue);
     // }
@@ -51,11 +52,24 @@ export function useEmployeeForm(){
     //     });
     // }
 
+    const generateAccessEmail = () => {
+        const { firstName } = personalInformationFormData.value;
+        return firstName ? firstName + "@hrms.com" : "";
+    }
+
+    const generateAccessPassword = () => {
+        const {lastName, dateOfBirth} = personalInformationFormData.value;
+        const birthdayData = dateOfBirth.split('-');
+        return lastName && dateOfBirth ? lastName.concat('.').concat(birthdayData.join('')) : "";
+    }
+
     return {
         personalInformationFormData,
         professionalInformationFormData,
         accountAccessFormData,
-        personalInformationErrors
+        personalInformationErrors,
+        generateAccessEmail,
+        generateAccessPassword
         // updateForm,
         // setFormValues
     }

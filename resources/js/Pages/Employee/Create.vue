@@ -30,7 +30,6 @@ const next = () => {
     if(stepCount.value === 3)
         validateInputs('/api/account-access/store', accountAccessFormData, formErrors);
 }
-
 const validateInputs = (url, data, errorsForm) => {
     axios.post(url, data.value)
         .then(response => {
