@@ -18,7 +18,7 @@ import AccountAccessView from "@/Pages/Employee/Partials/AccountAccessView.vue";
 import TransparentButton from "@/Components/TransparentButton.vue";
 import Button from "@/Components/Button.vue";
 import ButtonLink from "@/Components/ButtonLink.vue";
-import {usePage} from "@inertiajs/vue3";
+import {router, usePage} from "@inertiajs/vue3";
 import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
 
 const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
@@ -34,6 +34,18 @@ watch(editProfile, () => {
     Object.assign(professionalInformationFormData.value, employee.employment)
     Object.assign(accountAccessFormData.value, employee.access)
 }, {immediate: true});
+
+const saveChanges = () => {
+    const data = {
+        ...personalInformationFormData.value,
+        ...professionalInformationFormData.value,
+        ...accountAccessFormData.value
+    }
+    router.put(route('employees.update', employee.id), data,{
+        onSuccess: page => console.log(page),
+        onError: err => console.log(err)
+    });
+}
 
 
 
@@ -59,7 +71,7 @@ watch(editProfile, () => {
                     </DivFlexCenter>
                     <DivFlexCenter v-if="editProfile" class="gap-3">
                         <TransparentButton @click="editProfile = false">Cancel</TransparentButton>
-                        <Button>Save Changes</Button>
+                        <Button @click="saveChanges">Save Changes</Button>
                     </DivFlexCenter>
                 </DivFlexCenter>
 

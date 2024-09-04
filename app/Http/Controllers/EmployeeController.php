@@ -51,8 +51,19 @@ class EmployeeController extends Controller
        return to_route('employees.index');
    }
 
-   public function update(Request $request, Employee $employee)
+   public function update(Employee $employee, Request $request)
    {
+       $personalInformation = $request->validate((new StoreEmployeePersonalInformationRequest())->rules());
+       $professionalInformation = $request->validate((new StoreEmployeeProfessionalInformationRequest())->rules());
+       $accountAccess = $request->validate((new StoreEmployeeAccountAccessRequest())->rules());
+
+       $employee->update($personalInformation);
+       $employee->employment()->update($professionalInformation);
+       $employee->access()->update($accountAccess);
+
+       return inertia('Employee/Show', [
+           'employee' => new EmployeeResource($employee)
+       ]);
 
    }
 }
