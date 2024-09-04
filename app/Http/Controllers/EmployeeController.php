@@ -33,9 +33,7 @@ class EmployeeController extends Controller
        $employee->employment()->create($professionalInformation);
        $employee->access()->create($accountAccess);
 
-       return inertia('Employee/Create', [
-           'employee' => $employee
-       ]);
+       return to_route('employees.index');
    }
 
    public function show(Employee $employee)
@@ -48,7 +46,7 @@ class EmployeeController extends Controller
    public function destroy(Employee $employee)
    {
        $employee->delete();
-       return to_route('employees.index');
+       return redirect()->route('employees.index');
    }
 
    public function update(Employee $employee, Request $request)

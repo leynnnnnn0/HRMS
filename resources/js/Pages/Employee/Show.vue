@@ -20,30 +20,45 @@ import Button from "@/Components/Button.vue";
 import ButtonLink from "@/Components/ButtonLink.vue";
 import {router, usePage} from "@inertiajs/vue3";
 import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
+import {toast} from "vue3-toastify";
+
+const props = defineProps({
+    employee: {
+        type: Object,
+        required: true
+    }
+})
 
 const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
 const stepCount = ref(1);
 const isActive = (display) => {
     return stepCount.value === display;
 }
+const isLoading = ref(false);
 const editProfile = ref(false);
-const employee = usePage().props.employee.data;
 
 watch(editProfile, () => {
-    Object.assign(personalInformationFormData.value, employee)
-    Object.assign(professionalInformationFormData.value, employee.employment)
-    Object.assign(accountAccessFormData.value, employee.access)
+    Object.assign(personalInformationFormData.value, props.employee.data)
+    Object.assign(professionalInformationFormData.value, props.employee.data.employment)
+    Object.assign(accountAccessFormData.value, props.employee.data.access)
 }, {immediate: true});
 
 const saveChanges = () => {
+    isLoading.value = true;
     const data = {
         ...personalInformationFormData.value,
         ...professionalInformationFormData.value,
         ...accountAccessFormData.value
     }
-    router.put(route('employees.update', employee.id), data,{
-        onSuccess: page => console.log(page),
-        onError: err => console.log(err)
+    router.put(route('employees.update', props.employee.data.id), data,{
+        onSuccess: page => {
+            toast.success('Updated Successfully.')
+        },
+        onError: err => toast.error('Internal Server Error.'),
+        onFinish: visit => {
+            isLoading.value = false
+            editProfile.value = false
+        }
     });
 }
 
@@ -69,7 +84,7 @@ const saveChanges = () => {
                     </DivFlexCenter>
                     <DivFlexCenter v-if="editProfile" class="gap-3">
                         <TransparentButton @click="editProfile = false">Cancel</TransparentButton>
-                        <Button @click="saveChanges">Save Changes</Button>
+                        <Button @click="saveChanges" :isLoading="isLoading">Save Changes</Button>
                     </DivFlexCenter>
                 </DivFlexCenter>
 

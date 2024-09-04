@@ -16,7 +16,7 @@ import ButtonLink from "@/Components/ButtonLink.vue";
 import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
 import {router, useRemember} from "@inertiajs/vue3";
 import TransparentButton from "@/Components/TransparentButton.vue";
-import Spinner from "@/Components/Spinner.vue";
+import {toast} from "vue3-toastify";
 
 const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
 const stepCount = ref(1);
@@ -54,14 +54,20 @@ const validateInputs = (url, data, errorsForm) => {
         }).finally(() => isLoading.value = false);
 }
 const createEmployee = () => {
+    isLoading.value = true;
     const data =  {
         ...personalInformationFormData.value,
         ...professionalInformationFormData.value,
         ...accountAccessFormData.value
     }
     router.post(route('employees.store'), data,{
-        onSuccess: page => console.log(page),
-        onError: errors => console.log(errors)
+        onSuccess: page => {
+            toast.success('Employee Created Successfully.')
+        },
+        onError: errors => {
+            toast.error('Internal Server Error.')
+        },
+        onFinish: visit => isLoading.value = false
     })
 }
 </script>

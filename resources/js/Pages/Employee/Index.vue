@@ -13,15 +13,21 @@ import Span from "@/Components/Text/Span.vue";
 import IconButton from "@/Components/IconButton.vue";
 import view from "@/Images/Icons/view.svg";
 import trash from "@/Images/Icons/trash.svg";
-import edit from "@/Images/Icons/edit.svg";
 import PrimaryButtonLink from "@/Components/PrimaryButtonLink.vue";
 import {Link, router, usePage} from "@inertiajs/vue3";
+import {toast} from "vue3-toastify";
 
-const employees = usePage().props.employees;
+defineProps({
+    employees: {
+        type: Object,
+        required: true
+    }
+})
 const destroyEmployeeData = (id) => {
     router.delete(route('employees.destroy', id),{
+        preserveScroll: true,
         onBefore: () => confirm('Are you sure you want to delete this employee?'),
-        onSuccess: () => console.log('Deleted')
+        onSuccess: () => toast.success('Deleted Successfully')
     })
 }
 
