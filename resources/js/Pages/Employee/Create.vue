@@ -16,6 +16,7 @@ import ButtonLink from "@/Components/ButtonLink.vue";
 import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
 import {router, useRemember} from "@inertiajs/vue3";
 import TransparentButton from "@/Components/TransparentButton.vue";
+import Spinner from "@/Components/Spinner.vue";
 
 const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
 const stepCount = ref(1);
@@ -23,6 +24,8 @@ const formErrors = useRemember({});
 const isActive = (display) => {
     return stepCount.value === display;
 }
+
+const isLoading = ref(false);
 const next = () => {
     if(stepCount.value === 1)
         validateInputs('/api/personal-information/store', personalInformationFormData, formErrors);
@@ -33,6 +36,7 @@ const next = () => {
 }
 
 const validateInputs = (url, data, errorsForm) => {
+    isLoading.value = true;
     axios.post(url, data.value)
         .then(response => {
             if(response.data.success){
@@ -47,7 +51,7 @@ const validateInputs = (url, data, errorsForm) => {
             else {
                 console.log(err)
             }
-        });
+        }).finally(() => isLoading.value = false);
 }
 const createEmployee = () => {
     const data =  {
@@ -84,7 +88,9 @@ const createEmployee = () => {
                 <div class="flex h-full justify-end items-center gap-2 col-span-2">
                     <ButtonLink v-if="stepCount === 1" :href="route('employees.index')">Cancel</ButtonLink>
                     <TransparentButton v-if="stepCount > 1" @click="stepCount = stepCount - 1">Back</TransparentButton>
-                    <Button v-if="stepCount < 3" @click="next">Next</Button>
+                    <Button v-if="stepCount < 3" @click="next" :isLoading="isLoading">
+                        Next
+                    </Button>
                     <Button v-if="stepCount === 3" @click="createEmployee">Add</Button>
                 </div>
             </DivFlexCol>
