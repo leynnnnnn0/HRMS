@@ -18,7 +18,7 @@ import AccountAccessView from "@/Pages/Employee/Partials/AccountAccessView.vue";
 import TransparentButton from "@/Components/TransparentButton.vue";
 import Button from "@/Components/Button.vue";
 import ButtonLink from "@/Components/ButtonLink.vue";
-import {router, usePage} from "@inertiajs/vue3";
+import {router } from "@inertiajs/vue3";
 import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
 import {toast} from "vue3-toastify";
 
@@ -28,7 +28,6 @@ const props = defineProps({
         required: true
     }
 })
-
 const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
 const stepCount = ref(1);
 const isActive = (display) => {
@@ -36,13 +35,6 @@ const isActive = (display) => {
 }
 const isLoading = ref(false);
 const editProfile = ref(false);
-
-watch(editProfile, () => {
-    Object.assign(personalInformationFormData.value, props.employee.data)
-    Object.assign(professionalInformationFormData.value, props.employee.data.employment)
-    Object.assign(accountAccessFormData.value, props.employee.data.access)
-}, {immediate: true});
-
 const saveChanges = () => {
     isLoading.value = true;
     const data = {
@@ -61,6 +53,11 @@ const saveChanges = () => {
         }
     });
 }
+watch(editProfile, () => {
+    Object.assign(personalInformationFormData.value, props.employee.data)
+    Object.assign(professionalInformationFormData.value, props.employee.data.employment)
+    Object.assign(accountAccessFormData.value, props.employee.data.access)
+}, {immediate: true});
 
 </script>
 
