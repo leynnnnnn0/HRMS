@@ -14,8 +14,10 @@ import IconButton from "@/Components/IconButton.vue";
 import view from "@/Images/Icons/view.svg";
 import trash from "@/Images/Icons/trash.svg";
 import PrimaryButtonLink from "@/Components/PrimaryButtonLink.vue";
-import {Link, router, usePage} from "@inertiajs/vue3";
+import {Link, router} from "@inertiajs/vue3";
 import {toast} from "vue3-toastify";
+import {Notivue, Notification, push} from 'notivue'
+import Button from "@/Components/Button.vue";
 
 defineProps({
     employees: {
@@ -24,10 +26,20 @@ defineProps({
     }
 })
 const destroyEmployeeData = (id) => {
+    push.clearAll();
     router.delete(route('employees.destroy', id),{
         preserveScroll: true,
-        onBefore: () => confirm('Are you sure you want to delete this employee?'),
-        onSuccess: () => toast.success('Deleted Successfully')
+        onSuccess: () => toast.success('Deleted Successfully'),
+        onError: () => toast.error('Something Went Wrong:(')
+    })
+}
+
+const pushConfirmation = (id) => {
+    push.info({
+        message: "Are you sure you want to delete this employee?",
+        props: {
+            id: id
+        }
     })
 }
 
@@ -35,6 +47,15 @@ const destroyEmployeeData = (id) => {
 
 <template>
     <MainLayout>
+        <Notivue v-slot="item" class="z-50">
+            <div class="bg-white flex flex-col h-auto rounded-lg w-80 shadow-2xl p-4 z-50 gap-2">
+                <strong>{{ item.message }}</strong>
+                <div class="flex justify-end gap-2">
+                    <Button @click="item.clear" class="bg-black/50 border border-gray-500 text-sm">Cancel</Button>
+                    <Button @click="destroyEmployeeData(item.props.id)" class="text-sm bg-red-500">Confirm</Button>
+                </div>
+            </div>
+        </Notivue>
         <Header heading="Employees" subheading="All Employees"/>
         <section class="flex-1">
             <DivFlexCol class="p-5 w-full h-full rounded-lg border border-gray/20 space-y-5">
@@ -81,7 +102,7 @@ const destroyEmployeeData = (id) => {
                                 <Link :href="route('employees.show', employee.id)">
                                     <IconButton class="bg-transparent" :icon="view"/>
                                 </Link>
-                                <IconButton @click="destroyEmployeeData(employee.id)" class="bg-transparent" :icon="trash"/>
+                                <IconButton @click="pushConfirmation(employee.id)" class="bg-transparent" :icon="trash"/>
                             </DivFlexCenter>
                         </TD>
                     </tr>

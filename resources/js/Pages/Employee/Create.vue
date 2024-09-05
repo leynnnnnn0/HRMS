@@ -17,6 +17,8 @@ import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
 import {router, useForm, useRemember} from "@inertiajs/vue3";
 import TransparentButton from "@/Components/TransparentButton.vue";
 import {toast} from "vue3-toastify";
+import { Notivue, Notification, push } from 'notivue'
+import { useNotivueKeyboard } from 'notivue'
 
 const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
 const stepCount = ref(1);
@@ -87,13 +89,24 @@ const handleExcelFileUpload = () => {
         onError: err => console.log(err)
     });
 }
+
+const success = () => {
+    console.log('successs');
+    push.success({
+        title: 'Message sent',
+        message: 'Your message has been successfully sent.'
+    })
+}
 </script>
 
 <template>
     <MainLayout>
+        <Notivue v-slot="item">
+            <Notification :item="item" />
+        </Notivue>
         <Header heading="Add New Employee" subheading="All Employee > Add New Employee"/>
         <div v-if="stepCount === 1" class="flex gap-3">
-            <Button>Import Excel Files</Button>
+            <Button @click="success">Import Excel Files</Button>
             <div>
                 <form @input.prevent="handleExcelFileUpload" enctype="multipart/form-data">
                     <input type="file" @input="form.sheet = $event.target.files[0]">
