@@ -14,7 +14,7 @@ import PersonalInformation from "@/Pages/Employee/Partials/PersonalInformation.v
 import AccountAccess from "@/Pages/Employee/Partials/AccountAccess.vue";
 import ButtonLink from "@/Components/ButtonLink.vue";
 import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
-import {router, useRemember} from "@inertiajs/vue3";
+import {router, useForm, useRemember} from "@inertiajs/vue3";
 import TransparentButton from "@/Components/TransparentButton.vue";
 import {toast} from "vue3-toastify";
 
@@ -69,6 +69,24 @@ const createEmployee = () => {
         onFinish: visit => isLoading.value = false
     })
 }
+
+const form = useForm({
+    sheet: null,
+})
+
+const handleExcelFileUpload = () => {
+    const mimes = ['xlsx', 'csv'];
+    const type = form.sheet.name.split('.')[1];
+    console.log(mimes.includes(type));
+    if(form.sheet && !mimes.includes(type)) {
+        toast.warning('Only xlsx file is accepted');
+        return;
+    }
+    form.post(route('employees.import'), {
+        onSuccess: page => console.log(page),
+        onError: err => console.log(err)
+    });
+}
 </script>
 
 <template>
@@ -76,7 +94,11 @@ const createEmployee = () => {
         <Header heading="Add New Employee" subheading="All Employee > Add New Employee"/>
         <div v-if="stepCount === 1" class="flex gap-3">
             <Button>Import Excel Files</Button>
-            <Button>Import PDF</Button>
+            <div>
+                <form @input.prevent="handleExcelFileUpload" enctype="multipart/form-data">
+                    <input type="file" @input="form.sheet = $event.target.files[0]">
+                </form>
+            </div>
         </div>
         <section class="flex-1">
             <DivFlexCol class="p-5 w-full h-auto rounded-lg border border-gray/20 space-y-5">

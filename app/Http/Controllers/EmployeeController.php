@@ -6,8 +6,12 @@ use App\Http\Requests\Api\StoreEmployeeAccountAccessRequest;
 use App\Http\Requests\Api\StoreEmployeePersonalInformationRequest;
 use App\Http\Requests\Api\StoreEmployeeProfessionalInformationRequest;
 use App\Http\Resources\EmployeeResource;
+use App\Imports\EmployeesImport;
 use App\Models\Employee;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
@@ -41,6 +45,22 @@ class EmployeeController extends Controller
        return inertia('Employee/Show', [
            'employee' => new EmployeeResource($employee)
        ]);
+   }
+
+   public function import(Request $request)
+   {
+       $request->validate([
+          'sheet' => ['required', 'mimes:xls,xlsx,csv'],
+       ]);
+       $path = $request->file('sheet')->store('temp');
+       try {
+           Excel::import(new EmployeesImport, $path);
+       }catch (Exception $e){
+           return back()->withErrors($e->getMessage());
+       } finally {
+           Storage::delete($path);
+       }
+       return redirect()->route('employees.index');
    }
 
    public function destroy(Employee $employee)
