@@ -80,7 +80,7 @@ const handleExcelFileUpload = () => {
     const type = form.sheet.name.split('.')[1];
     console.log(mimes.includes(type));
     if(form.sheet && !mimes.includes(type)) {
-        toast.warning('Only xlsx file is accepted');
+        toast.warning('Invalid file type.');
         return;
     }
     const notification = push.promise({message: "Data are being processed, hold on...",
