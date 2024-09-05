@@ -25,11 +25,16 @@ defineProps({
         required: true
     }
 })
-const destroyEmployeeData = (id) => {
-    push.clearAll();
+const destroyEmployeeData = (id, item) => {
+    item.clear();
     router.delete(route('employees.destroy', id),{
         preserveScroll: true,
-        onSuccess: () => toast.success('Deleted Successfully'),
+        onSuccess: () => push.success({
+            message: 'Deleted Successfully',
+            props: {
+                confirmation: false
+            }
+        }),
         onError: () => toast.error('Something Went Wrong:(')
     })
 }
@@ -38,6 +43,7 @@ const pushConfirmation = (id) => {
     push.info({
         message: "Are you sure you want to delete this employee?",
         props: {
+            confirmation: true,
             id: id
         }
     })
@@ -48,14 +54,16 @@ const pushConfirmation = (id) => {
 <template>
     <MainLayout>
         <Notivue v-slot="item" class="z-50">
-            <div class="bg-white flex flex-col h-auto rounded-lg w-80 shadow-2xl p-4 z-50 gap-2">
+            <div v-if="item.props.confirmation" class="bg-white flex flex-col h-auto rounded-lg w-80 shadow-2xl p-4 z-50 gap-2">
                 <strong>{{ item.message }}</strong>
                 <div class="flex justify-end gap-2">
                     <Button @click="item.clear" class="bg-black/50 border border-gray-500 text-sm">Cancel</Button>
-                    <Button @click="destroyEmployeeData(item.props.id)" class="text-sm bg-red-500">Confirm</Button>
+                    <Button @click="destroyEmployeeData(item.props.id, item)" class="text-sm bg-red-500">Confirm</Button>
                 </div>
             </div>
+            <Notification v-else :item="item"/>
         </Notivue>
+
         <Header heading="Employees" subheading="All Employees"/>
         <section class="flex-1">
             <DivFlexCol class="p-5 w-full h-full rounded-lg border border-gray/20 space-y-5">

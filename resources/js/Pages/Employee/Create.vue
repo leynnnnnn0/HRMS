@@ -18,7 +18,6 @@ import {router, useForm, useRemember} from "@inertiajs/vue3";
 import TransparentButton from "@/Components/TransparentButton.vue";
 import {toast} from "vue3-toastify";
 import { Notivue, Notification, push } from 'notivue'
-import { useNotivueKeyboard } from 'notivue'
 
 const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
 const stepCount = ref(1);
@@ -84,19 +83,18 @@ const handleExcelFileUpload = () => {
         toast.warning('Only xlsx file is accepted');
         return;
     }
+    const notification = push.promise("We're sending your message, hold on...")
     form.post(route('employees.import'), {
-        onSuccess: page => console.log(page),
-        onError: err => console.log(err)
+        onSuccess: page => notification.resolve('Data has been successfully imported!'),
+        onError: err => {
+            console.log(err);
+            notification.reject(
+                'There was an error importing the data. Please try again.'
+            )
+        }
     });
 }
 
-const success = () => {
-    console.log('successs');
-    push.success({
-        title: 'Message sent',
-        message: 'Your message has been successfully sent.'
-    })
-}
 </script>
 
 <template>
@@ -106,7 +104,6 @@ const success = () => {
         </Notivue>
         <Header heading="Add New Employee" subheading="All Employee > Add New Employee"/>
         <div v-if="stepCount === 1" class="flex gap-3">
-            <Button @click="success">Import Excel Files</Button>
             <div>
                 <form @input.prevent="handleExcelFileUpload" enctype="multipart/form-data">
                     <input type="file" @input="form.sheet = $event.target.files[0]">
