@@ -34,7 +34,6 @@ const next = () => {
     if(stepCount.value === 3)
         validateInputs('/api/account-access/store', accountAccessFormData, formErrors);
 }
-
 const validateInputs = (url, data, errorsForm) => {
     isLoading.value = true;
     axios.post(url, data.value)
@@ -75,6 +74,10 @@ const createEmployee = () => {
 <template>
     <MainLayout>
         <Header heading="Add New Employee" subheading="All Employee > Add New Employee"/>
+        <div v-if="stepCount === 1" class="flex gap-3">
+            <Button>Import Excel Files</Button>
+            <Button>Import PDF</Button>
+        </div>
         <section class="flex-1">
             <DivFlexCol class="p-5 w-full h-auto rounded-lg border border-gray/20 space-y-5">
                   <DivFlexCenter class="gap-5">
