@@ -1,5 +1,4 @@
 <script setup>
-import MainLayout from "@/Layouts/MainLayout.vue";
 import DivFlexCol from "@/Components/Divs/DivFlexCol.vue";
 import Header from "@/Components/Header.vue";
 import DivFlexCenter from "@/Components/Divs/DivFlexCenter.vue";
@@ -18,7 +17,7 @@ import AccountAccessView from "@/Pages/Employee/Partials/AccountAccessView.vue";
 import TransparentButton from "@/Components/TransparentButton.vue";
 import Button from "@/Components/Button.vue";
 import ButtonLink from "@/Components/ButtonLink.vue";
-import {router } from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
 import {toast} from "vue3-toastify";
 import {push} from "notivue";
@@ -45,11 +44,20 @@ const saveChanges = () => {
     }
     router.put(route('employees.update', props.employee.data.id), data,{
         onSuccess: page => {
-            push.success('Updated Successfully.')
+            push.success( {
+                message: 'Updated Successfully.',
+                props: {
+                    result: true
+                }
+            })
         },
         onError: err => {
-            toast.error('Internal Server Error.')
-            console.log(err)
+            toast.error({
+                message: 'Internal Service Error.',
+                props: {
+                    result: true
+                }
+            })
         },
         onFinish: visit => {
             isLoading.value = false
@@ -62,21 +70,21 @@ watch(editProfile, () => {
     Object.assign(professionalInformationFormData.value, props.employee.data.employment)
     Object.assign(accountAccessFormData.value, props.employee.data.access)
 }, {immediate: true});
-
+console.log(props.employee)
 </script>
 
 <template>
-    <MainLayout>
-        <Header heading="Brooklyn Simmons" subheading="All Employees > Brooklyn Simmons"/>
+    <Head title="HRMS - Employee"/>
+        <Header :heading="employee.data.fullName" subheading="Employee"/>
         <section class="flex-1">
             <DivFlexCol class="p-5 w-full h-full rounded-lg border border-gray/20 space-y-5">
                 <DivFlexCenter class="border-b border-gray-200 pb-3 justify-between">
                     <DivFlexCenter class="gap-3">
                         <img :src="profile" alt="profile" class="size-20">
                         <DivFlexCol>
-                            <h1 class="text-lg font-bold">Brooklyn Simmons</h1>
-                            <Span class="text-xl">Project Manager</Span>
-                            <Span class="text-xl">brooklyn@hrms.com</Span>
+                            <h1 class="text-lg font-bold"> {{ employee.data.fullName }}</h1>
+                            <Span class="text-xl">{{ employee.data.employment.position }}</Span>
+                            <Span class="text-xl">{{ employee.data.access.accessEmail}}</Span>
                         </DivFlexCol>
                     </DivFlexCenter>
                     <DivFlexCenter v-if="!editProfile" class="gap-3">
@@ -122,5 +130,4 @@ watch(editProfile, () => {
                 </div>
             </DivFlexCol>
         </section>
-    </MainLayout>
 </template>

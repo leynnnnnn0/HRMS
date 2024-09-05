@@ -17,16 +17,20 @@ class EmployeeController extends Controller
 {
    public function index()
    {
+       $employees = Employee::paginate(8)->through(fn($item) => [
+       'id' => $item->id,
+       'fullName' => ucfirst($item->firstName) . ' ' . ucfirst($item->lastName),
+       'department' => $item->employment->department,
+       'position' => $item->employment->position,
+       'team' => $item->employment->team
+        ]);
        return inertia('Employee/Index', [
-           'employees' => EmployeeResource::collection(Employee::query()
-               ->when(request('search'), function ($query, $search) {
-                   $query->where('firstName', 'like', '%' . $search . '%')
-                   ->orWhere('lastName', 'like', '%' . $search . '%');
-               })
-               ->get()),
-           'search' => request()->all()
+           'employees' => $employees,
        ]);
    }
+
+   // filters = Request::only(['search'])
+    // replace: true
 
    public function create()
    {

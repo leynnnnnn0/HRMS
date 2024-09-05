@@ -9,9 +9,9 @@ import 'notivue/notification-progress.css'
 
 
 import { createApp, h } from 'vue';
-import { createInertiaApp } from '@inertiajs/vue3';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import {createInertiaApp, Link} from '@inertiajs/vue3';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import MainLayout from "@/Layouts/MainLayout.vue";
 
 const notivue = createNotivue({
     limit: 1,
@@ -26,7 +26,12 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
+    resolve: (name) => {
+        const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
+        let page = pages[`./Pages/${name}.vue`]
+        page.default.layout = MainLayout
+        return page
+    },
     setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
             .use(plugin)
@@ -37,10 +42,11 @@ createInertiaApp({
                 closeButton: false
             })
             .use(notivue)
+            .component('Link', Link)
             .mount(el);
     },
     progress: {
-        color: '#4B5563',
+        color: '#7152F3',
     },
 
 });

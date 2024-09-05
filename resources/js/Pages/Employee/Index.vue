@@ -1,5 +1,4 @@
 <script setup>
-import MainLayout from "@/Layouts/MainLayout.vue";
 import Header from "@/Components/Header.vue";
 import DivFlexCol from "@/Components/Divs/DivFlexCol.vue";
 import DivFlexCenter from "@/Components/Divs/DivFlexCenter.vue";
@@ -19,6 +18,7 @@ import {toast} from "vue3-toastify";
 import {Notivue, Notification, push, NotificationProgress} from 'notivue'
 import Button from "@/Components/Button.vue";
 import {ref, watch} from "vue";
+import {Head} from "@inertiajs/vue3";
 
 
 defineProps({
@@ -27,6 +27,9 @@ defineProps({
         required: true
     }
 })
+
+console.log(usePage().props.employees.links);
+
 const destroyEmployeeData = (id, item) => {
     item.clear();
     router.delete(route('employees.destroy', id),{
@@ -62,7 +65,7 @@ watch(search, value => {
 </script>
 
 <template>
-    <MainLayout>
+    <Head title="HRMS - Employee"/>
         <Notivue v-slot="item" class="z-50">
             <div v-if="item.props.delete" class="bg-white flex flex-col h-auto rounded-lg w-80 shadow-2xl p-4 z-50 gap-2">
                 <strong>{{ item.message }}</strong>
@@ -112,9 +115,9 @@ watch(search, value => {
                                 </DivFlexCol>
                             </DivFlexCenter>
                         </TD>
-                        <TD>{{ employee.employment.department }}</TD>
-                        <TD>{{ employee.employment.position }}</TD>
-                        <TD>Team {{ employee.employment.team }}</TD>
+                        <TD>{{ employee.department }}</TD>
+                        <TD>{{ employee.position }}</TD>
+                        <TD>Team {{ employee.team }}</TD>
                         <TD>
                             <DivFlexCenter class="gap-2 w-fit">
                                 <Link :href="route('employees.show', employee.id)">
@@ -129,5 +132,14 @@ watch(search, value => {
 
             </DivFlexCol>
         </section>
-    </MainLayout>
+<!--    Paginate-->
+    <div class="flex items-center justify-end gap-2 mt-6">
+        <Component v-for="(link) in employees.links"
+                   :is="link.url ? 'Link' : 'span'"
+                   :href="link.url"
+                   v-html="link.label"
+                   class="px-3 py-1 border border-gray-200 text-primary-font font-bold rounded-lg"
+                   :class="{'bg-primary text-white' : link.active, 'hover:bg-primary/50 transition-colors transition-duration duration-300' : link.url}"
+                   />
+    </div>
 </template>

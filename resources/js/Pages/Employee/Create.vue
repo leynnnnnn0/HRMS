@@ -109,7 +109,6 @@ const handleExcelFileUpload = () => {
 </script>
 
 <template>
-    <MainLayout>
         <Header heading="Add New Employee" subheading="All Employee > Add New Employee"/>
         <div v-if="stepCount === 1" class="flex gap-3">
             <div class="relative px-3 py-1 bg-green-500 rounded-lg text-white text-sm">
@@ -145,5 +144,4 @@ const handleExcelFileUpload = () => {
                 </div>
             </DivFlexCol>
         </section>
-    </MainLayout>
 </template>
