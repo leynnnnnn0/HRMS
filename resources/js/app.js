@@ -5,6 +5,7 @@ import 'vue3-toastify/dist/index.css';
 import { createNotivue } from 'notivue'
 import 'notivue/notification.css' // Only needed if using built-in notifications
 import 'notivue/animations.css' // Only needed if using built-in animations
+import 'notivue/notification-progress.css'
 
 
 import { createApp, h } from 'vue';
@@ -13,7 +14,13 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
 const notivue = createNotivue({
-    limit: 1
+    limit: 1,
+    avoidDuplicates: true,
+    notifications: {
+        global: {
+            duration: 3000
+        }
+    }
 });
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

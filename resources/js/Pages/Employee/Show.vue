@@ -21,6 +21,7 @@ import ButtonLink from "@/Components/ButtonLink.vue";
 import {router } from "@inertiajs/vue3";
 import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
 import {toast} from "vue3-toastify";
+import {push} from "notivue";
 
 const props = defineProps({
     employee: {
@@ -44,9 +45,12 @@ const saveChanges = () => {
     }
     router.put(route('employees.update', props.employee.data.id), data,{
         onSuccess: page => {
-            toast.success('Updated Successfully.')
+            push.success('Updated Successfully.')
         },
-        onError: err => toast.error('Internal Server Error.'),
+        onError: err => {
+            toast.error('Internal Server Error.')
+            console.log(err)
+        },
         onFinish: visit => {
             isLoading.value = false
             editProfile.value = false

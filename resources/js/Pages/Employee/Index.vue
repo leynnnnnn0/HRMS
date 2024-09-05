@@ -14,10 +14,12 @@ import IconButton from "@/Components/IconButton.vue";
 import view from "@/Images/Icons/view.svg";
 import trash from "@/Images/Icons/trash.svg";
 import PrimaryButtonLink from "@/Components/PrimaryButtonLink.vue";
-import {Link, router} from "@inertiajs/vue3";
+import {Link, router, usePage} from "@inertiajs/vue3";
 import {toast} from "vue3-toastify";
-import {Notivue, Notification, push} from 'notivue'
+import {Notivue, Notification, push, NotificationProgress} from 'notivue'
 import Button from "@/Components/Button.vue";
+import {ref, watch} from "vue";
+
 
 defineProps({
     employees: {
@@ -32,7 +34,7 @@ const destroyEmployeeData = (id, item) => {
         onSuccess: () => push.success({
             message: 'Deleted Successfully',
             props: {
-                confirmation: false
+                result: true
             }
         }),
         onError: () => toast.error('Something Went Wrong:(')
@@ -43,32 +45,40 @@ const pushConfirmation = (id) => {
     push.info({
         message: "Are you sure you want to delete this employee?",
         props: {
-            confirmation: true,
-            id: id
+            delete: true,
+            id: id,
         }
     })
 }
+
+let search = ref('');
+
+watch(search, value => {
+    router.get(route('employees.index'), {search: value}, {
+        preserveState: true
+    });
+})
 
 </script>
 
 <template>
     <MainLayout>
         <Notivue v-slot="item" class="z-50">
-            <div v-if="item.props.confirmation" class="bg-white flex flex-col h-auto rounded-lg w-80 shadow-2xl p-4 z-50 gap-2">
+            <div v-if="item.props.delete" class="bg-white flex flex-col h-auto rounded-lg w-80 shadow-2xl p-4 z-50 gap-2">
                 <strong>{{ item.message }}</strong>
                 <div class="flex justify-end gap-2">
                     <Button @click="item.clear" class="bg-black/50 border border-gray-500 text-sm">Cancel</Button>
                     <Button @click="destroyEmployeeData(item.props.id, item)" class="text-sm bg-red-500">Confirm</Button>
                 </div>
             </div>
-            <Notification v-else :item="item"/>
         </Notivue>
 
         <Header heading="Employees" subheading="All Employees"/>
         <section class="flex-1">
             <DivFlexCol class="p-5 w-full h-full rounded-lg border border-gray/20 space-y-5">
                 <DivFlexCenter class="justify-between">
-                    <input type="text" placeholder="Search..." class="w-96 rounded-lg border-gray-200">
+                <!-- Search Bar-->
+                    <input v-model="search" type="text" placeholder="Search..." class="w-96 rounded-lg border-gray-200">
                     <DivFlexCenter class="gap-5">
                         <PrimaryButtonLink :href="route('employees.create')" :icon="plusCircle">
                             Add New Employee

@@ -17,7 +17,7 @@ import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
 import {router, useForm, useRemember} from "@inertiajs/vue3";
 import TransparentButton from "@/Components/TransparentButton.vue";
 import {toast} from "vue3-toastify";
-import { Notivue, Notification, push } from 'notivue'
+import { Notivue, Notification, push, NotificationProgress } from 'notivue'
 
 const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
 const stepCount = ref(1);
@@ -83,13 +83,24 @@ const handleExcelFileUpload = () => {
         toast.warning('Only xlsx file is accepted');
         return;
     }
-    const notification = push.promise("We're sending your message, hold on...")
+    const notification = push.promise({message: "Data are being processed, hold on...",
+        props: {
+            promise: true
+        }
+    });
     form.post(route('employees.import'), {
-        onSuccess: page => notification.resolve('Data has been successfully imported!'),
+        onSuccess: page => notification.resolve({message: 'Data has been successfully imported!',
+            props: {
+                promise: true
+            }
+        }),
         onError: err => {
-            console.log(err);
             notification.reject(
-                'There was an error importing the data. Please try again.'
+                {message: 'There was an error importing the data. Please try again.',
+                    props: {
+                        promise: true
+                    }
+                }
             )
         }
     });
@@ -99,15 +110,13 @@ const handleExcelFileUpload = () => {
 
 <template>
     <MainLayout>
-        <Notivue v-slot="item">
-            <Notification :item="item" />
-        </Notivue>
         <Header heading="Add New Employee" subheading="All Employee > Add New Employee"/>
         <div v-if="stepCount === 1" class="flex gap-3">
-            <div>
-                <form @input.prevent="handleExcelFileUpload" enctype="multipart/form-data">
+            <div class="relative px-3 py-1 bg-green-500 rounded-lg text-white text-sm">
+                <form @input.prevent="handleExcelFileUpload" enctype="multipart/form-data" class="absolute opacity-0 inset-0">
                     <input type="file" @input="form.sheet = $event.target.files[0]">
                 </form>
+                Import Excel File
             </div>
         </div>
         <section class="flex-1">

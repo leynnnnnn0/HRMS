@@ -18,7 +18,13 @@ class EmployeeController extends Controller
    public function index()
    {
        return inertia('Employee/Index', [
-           'employees' => EmployeeResource::collection(Employee::all())
+           'employees' => EmployeeResource::collection(Employee::query()
+               ->when(request('search'), function ($query, $search) {
+                   $query->where('firstName', 'like', '%' . $search . '%')
+                   ->orWhere('lastName', 'like', '%' . $search . '%');
+               })
+               ->get()),
+           'search' => request()->all()
        ]);
    }
 
@@ -78,7 +84,9 @@ class EmployeeController extends Controller
        $employee->update($personalInformation);
        $employee->employment()->update($professionalInformation);
        $employee->access()->update($accountAccess);
+       $employee->save();
 
+       $employee = new EmployeeResource(Employee::find($employee->id));
        return inertia('Employee/Show', [
            'employee' => new EmployeeResource($employee)
        ]);
