@@ -70,7 +70,6 @@ watch(editProfile, () => {
     Object.assign(professionalInformationFormData.value, props.employee.data.employment)
     Object.assign(accountAccessFormData.value, props.employee.data.access)
 }, {immediate: true});
-console.log(props.employee)
 </script>
 
 <template>

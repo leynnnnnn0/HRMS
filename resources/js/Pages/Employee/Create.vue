@@ -111,8 +111,8 @@ const handleExcelFileUpload = () => {
 <template>
         <Header heading="Add New Employee" subheading="All Employee > Add New Employee"/>
         <div v-if="stepCount === 1" class="flex gap-3">
-            <div class="relative px-3 py-1 bg-green-500 rounded-lg text-white text-sm">
-                <form @input.prevent="handleExcelFileUpload" enctype="multipart/form-data" class="absolute opacity-0 inset-0">
+            <div class="hover:bg-opacity-75 transition-colors transition-duration duration-300 relative px-3 py-1 bg-green-500 rounded-lg text-white text-sm">
+                <form @input.prevent="handleExcelFileUpload" enctype="multipart/form-data" class="cursor-pointer absolute opacity-0 inset-0">
                     <input type="file" @input="form.sheet = $event.target.files[0]">
                 </form>
                 Import Excel File

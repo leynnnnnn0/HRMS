@@ -15,10 +15,11 @@ import trash from "@/Images/Icons/trash.svg";
 import PrimaryButtonLink from "@/Components/PrimaryButtonLink.vue";
 import {Link, router, usePage} from "@inertiajs/vue3";
 import {toast} from "vue3-toastify";
-import {Notivue, Notification, push, NotificationProgress} from 'notivue'
+import {Notivue, push} from 'notivue'
 import Button from "@/Components/Button.vue";
 import {ref, watch} from "vue";
 import {Head} from "@inertiajs/vue3";
+import {throttle} from "lodash";
 
 
 defineProps({
@@ -27,8 +28,6 @@ defineProps({
         required: true
     }
 })
-
-console.log(usePage().props.employees.links);
 
 const destroyEmployeeData = (id, item) => {
     item.clear();
@@ -54,13 +53,14 @@ const pushConfirmation = (id) => {
     })
 }
 
-let search = ref('');
+let search = ref(usePage().props.filters.search);
 
-watch(search, value => {
+watch(search, throttle(function(value){
     router.get(route('employees.index'), {search: value}, {
-        preserveState: true
+        preserveState: true,
+        replace: true
     });
-})
+}, 500));
 
 </script>
 
@@ -133,7 +133,7 @@ watch(search, value => {
             </DivFlexCol>
         </section>
 <!--    Paginate-->
-    <div class="flex items-center justify-end gap-2 mt-6">
+    <div class="flex items-center justify-end gap-2">
         <Component v-for="(link) in employees.links"
                    :is="link.url ? 'Link' : 'span'"
                    :href="link.url"

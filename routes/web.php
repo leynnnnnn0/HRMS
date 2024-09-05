@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -21,6 +22,8 @@ Route::get('/dashboard', function () {
 
 Route::resource('employees', EmployeeController::class);
 Route::post('/employees/import', [EmployeeController::class, 'import'])->name('employees.import');
+
+Route::resource('departments', DepartmentController::class);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

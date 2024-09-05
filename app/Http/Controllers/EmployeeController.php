@@ -17,15 +17,19 @@ class EmployeeController extends Controller
 {
    public function index()
    {
-       $employees = Employee::paginate(8)->through(fn($item) => [
-       'id' => $item->id,
-       'fullName' => ucfirst($item->firstName) . ' ' . ucfirst($item->lastName),
-       'department' => $item->employment->department,
-       'position' => $item->employment->position,
-       'team' => $item->employment->team
-        ]);
+       $employees = Employee::query()->when(request('search'), function ($query){
+           $query->where('firstName', 'like', '%' . request('search') . '%');
+       })->paginate(8)->through(fn($item) => [
+           'id' => $item->id,
+           'fullName' => ucfirst($item->firstName) . ' ' . ucfirst($item->lastName),
+           'department' => $item->employment->department,
+           'position' => $item->employment->position,
+           'team' => $item->employment->team
+       ]);
+
        return inertia('Employee/Index', [
            'employees' => $employees,
+           'filters' => request()->only(['search'])
        ]);
    }
 
