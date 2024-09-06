@@ -38,7 +38,7 @@ watch(props.formData, (newValue) => {
         <InputDiv>
             <Label>First Name*</Label>
             <Input v-model="formData.firstName" placeholder="John"/>
-            <Error v-if="formErrors.firstName">{{ formErrors.firstName[0]}}</Error>
+            <Error v-if="formErrors && formErrors.firstName">{{ formErrors.firstName[0]}}</Error>
         </InputDiv>
         <InputDiv>
             <Label>Middle Name</Label>

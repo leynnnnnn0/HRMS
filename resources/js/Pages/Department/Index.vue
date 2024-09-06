@@ -16,8 +16,8 @@ import EmployeeOverview from "@/Components/EmployeeOverview.vue";
                 <EmployeeOverview position="Web Developer" full-name="John Doe"/>
                 <EmployeeOverview position="Web Developer" full-name="John Doe"/>
             </DepartmentOverview>
-
         </DivFlexCol>
+
     </section>
 </template>
 

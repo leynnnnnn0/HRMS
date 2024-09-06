@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Api\StoreEmployeeAccountAccessRequest;
 use App\Http\Requests\Api\StoreEmployeePersonalInformationRequest;
 use App\Http\Requests\Api\StoreEmployeeProfessionalInformationRequest;
+use App\Http\Resources\DepartmentResource;
 use App\Http\Resources\EmployeeResource;
 use App\Imports\EmployeesImport;
+use App\Models\Department;
 use App\Models\Employee;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,41 +16,42 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
-   public function index()
-   {
-       $employees = Employee::query()->when(request('search'), function ($query){
-           $query->where('firstName', 'like', '%' . request('search') . '%');
-       })->paginate(8)->through(fn($item) => [
-           'id' => $item->id,
-           'fullName' => ucfirst($item->firstName) . ' ' . ucfirst($item->lastName),
-           'department' => $item->employment->department,
-           'position' => $item->employment->position,
-           'team' => $item->employment->team
-       ]);
+    public function index()
+    {
+        $employees = Employee::query()
+            ->with(['employmentDetails.team.department', 'employmentDetails.position']) // Eager load related data
+            ->when(request('search'), function ($query) {
+                $query->where('firstName', 'like', '%' . request('search') . '%');
+            })
+            ->paginate(8)
+            ->through(fn($item) => [
+                'id' => $item->id,
+                'fullName' => ucfirst($item->firstName) . ' ' . ucfirst($item->lastName),
+                'department' => $item->employmentDetails->team->department->name ?? 'N/A', // Accessing through relationships
+                'position' => $item->employmentDetails->position->name ?? 'N/A',
+                'team' => $item->employmentDetails->team->name ?? 'N/A',
+            ]);
 
-       return inertia('Employee/Index', [
-           'employees' => $employees,
-           'filters' => request()->only(['search'])
-       ]);
-   }
-
-   // filters = Request::only(['search'])
-    // replace: true
+        return inertia('Employee/Index', [
+            'employees' => $employees,
+            'filters' => request()->only(['search']),
+        ]);
+    }
 
    public function create()
    {
-       return inertia('Employee/Create');
+       return inertia('Employee/Create', [
+           'departments' => DepartmentResource::collection(Department::all()),
+       ]);
    }
 
    public function store(Request $request)
    {
        $personalInformation = $request->validate((new StoreEmployeePersonalInformationRequest())->rules());
        $professionalInformation = $request->validate((new StoreEmployeeProfessionalInformationRequest())->rules());
-       $accountAccess = $request->validate((new StoreEmployeeAccountAccessRequest())->rules());
 
        $employee = Employee::create($personalInformation);
-       $employee->employment()->create($professionalInformation);
-       $employee->access()->create($accountAccess);
+       $employee->employmentDetails()->create($professionalInformation);
 
        return to_route('employees.index');
    }
@@ -57,7 +59,7 @@ class EmployeeController extends Controller
    public function show(Employee $employee)
    {
        return inertia('Employee/Show', [
-           'employee' => new EmployeeResource($employee)
+           'employee' => new EmployeeResource($employee->load(['employmentDetails.team.department', 'employmentDetails.position']))
        ]);
    }
 
@@ -87,11 +89,9 @@ class EmployeeController extends Controller
    {
        $personalInformation = $request->validate((new StoreEmployeePersonalInformationRequest())->rules());
        $professionalInformation = $request->validate((new StoreEmployeeProfessionalInformationRequest())->rules());
-       $accountAccess = $request->validate((new StoreEmployeeAccountAccessRequest())->rules());
 
        $employee->update($personalInformation);
-       $employee->employment()->update($professionalInformation);
-       $employee->access()->update($accountAccess);
+       $employee->employmentDetails()->update($professionalInformation);
        $employee->save();
 
        $employee = new EmployeeResource(Employee::find($employee->id));

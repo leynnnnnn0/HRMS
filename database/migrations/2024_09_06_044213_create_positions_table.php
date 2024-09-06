@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Employee;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employee_accesses', function (Blueprint $table) {
+        Schema::create('positions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Employee::class)->constrained()->cascadeOnDelete();
-            $table->string('accessEmail')->unique();
-            $table->string('accessPassword');
+            $table->foreignId('department_id')->constrained('departments')->cascadeOnDelete();
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employee_accesses');
+        Schema::dropIfExists('positions');
     }
 };

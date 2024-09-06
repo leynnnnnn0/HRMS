@@ -11,7 +11,7 @@ class StoreEmployeeProfessionalInformationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check();
+        return true;
     }
 
     /**
@@ -23,10 +23,12 @@ class StoreEmployeeProfessionalInformationRequest extends FormRequest
     {
         return [
             'joiningDate' => ['required', 'date', 'date_format:Y-m-d'],
-            'department' => ['required', 'string'],
-            'position' => ['required', 'string'],
-            'team' => ['required', 'string'],
+            'department_id' => ['required', 'string', 'exists:departments,id'],
+            'position_id' => ['required', 'string', 'exists:positions,id'],
+            'team_id' => ['required', 'string', 'exists:teams,id'],
             'ratePerHour' => ['required', 'numeric'],
+            'accessEmail' => ['required', 'email', 'unique:employment_details,accessEmail'],
+            'accessPassword' => ['required', 'string', 'min:8'],
         ];
     }
 }

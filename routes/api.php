@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\PositionController;
+use App\Http\Controllers\Api\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,5 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/professional-information/store', 'validateProfessionalInformation');
         Route::post('/account-access/store', 'validateAccountAccess');
     });
-
 });
+
+Route::get('positions', PositionController::class);
+Route::get('teams', TeamController::class);

@@ -1,5 +1,4 @@
 <script setup>
-import MainLayout from "@/Layouts/MainLayout.vue";
 import Header from "@/Components/Header.vue";
 import DivFlexCol from "@/Components/Divs/DivFlexCol.vue";
 import DivFlexCenter from "@/Components/Divs/DivFlexCenter.vue";
@@ -9,7 +8,7 @@ import briefcase from "@/Images/Icons/briefcase.svg";
 import lock from "@/Images/Icons/lock.svg";
 import Button from "@/Components/Button.vue";
 import ProfessionalInformation from "@/Pages/Employee/Partials/ProfessionalInformation.vue";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import PersonalInformation from "@/Pages/Employee/Partials/PersonalInformation.vue";
 import AccountAccess from "@/Pages/Employee/Partials/AccountAccess.vue";
 import ButtonLink from "@/Components/ButtonLink.vue";
@@ -17,9 +16,16 @@ import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
 import {router, useForm, useRemember} from "@inertiajs/vue3";
 import TransparentButton from "@/Components/TransparentButton.vue";
 import {toast} from "vue3-toastify";
-import { Notivue, Notification, push, NotificationProgress } from 'notivue'
+import { push } from 'notivue'
 
-const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
+const props = defineProps({
+   departments: {
+       type: Object,
+       required: true
+   }
+});
+
+const { personalInformationFormData, professionalInformationFormData } = useEmployeeForm();
 const stepCount = ref(1);
 const formErrors = useRemember({});
 const isActive = (display) => {
@@ -32,8 +38,7 @@ const next = () => {
         validateInputs('/api/personal-information/store', personalInformationFormData, formErrors);
     if(stepCount.value === 2)
         validateInputs('/api/professional-information/store', professionalInformationFormData, formErrors);
-    if(stepCount.value === 3)
-        validateInputs('/api/account-access/store', accountAccessFormData, formErrors);
+    console.log(professionalInformationFormData);
 }
 const validateInputs = (url, data, errorsForm) => {
     isLoading.value = true;
@@ -41,11 +46,11 @@ const validateInputs = (url, data, errorsForm) => {
         .then(response => {
             if(response.data.success){
                 stepCount.value = stepCount.value + 1
-                errorsForm.value = {};
             }
         })
         .catch(err => {
             if(err.response){
+                console.log(err.response)
                 errorsForm.value = err.response.data.errors
             }
             else {
@@ -58,7 +63,6 @@ const createEmployee = () => {
     const data =  {
         ...personalInformationFormData.value,
         ...professionalInformationFormData.value,
-        ...accountAccessFormData.value
     }
     router.post(route('employees.store'), data,{
         onSuccess: page => {
@@ -66,6 +70,7 @@ const createEmployee = () => {
         },
         onError: errors => {
             toast.error('Internal Server Error.')
+            console.log(errors);
         },
         onFinish: visit => isLoading.value = false
     })
@@ -132,8 +137,11 @@ const handleExcelFileUpload = () => {
                       </PrimaryButton>
                 </DivFlexCenter>
                 <PersonalInformation :formData="personalInformationFormData" :formErrors="formErrors" v-if="stepCount === 1"/>
-                <ProfessionalInformation :formData="professionalInformationFormData" :formErrors="formErrors" v-if="stepCount === 2"/>
-                <AccountAccess :formData="accountAccessFormData" :formErrors="formErrors" v-if="stepCount === 3"/>
+                <ProfessionalInformation :formData="professionalInformationFormData"
+                                         :formErrors="formErrors"
+                                         :departments="departments.data"
+                                         v-if="stepCount === 2"/>
+                <AccountAccess :formData="professionalInformationFormData" :formErrors="formErrors" v-if="stepCount === 3"/>
                 <div class="flex h-full justify-end items-center gap-2 col-span-2">
                     <ButtonLink v-if="stepCount === 1" :href="route('employees.index')">Cancel</ButtonLink>
                     <TransparentButton v-if="stepCount > 1" @click="stepCount = stepCount - 1">Back</TransparentButton>

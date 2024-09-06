@@ -23,14 +23,10 @@ class Employee extends Model
         'postalCode'
     ];
 
-    protected $with = ['employment', 'access'];
+    protected $with = ['employmentDetails'];
 
-    public function employment(){
+    public function employmentDetails(){
         return $this->hasOne(EmploymentDetail::class);
-    }
-
-    public function access(){
-        return $this->hasOne(EmployeeAccess::class);
     }
 
 }

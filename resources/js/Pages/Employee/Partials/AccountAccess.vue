@@ -5,9 +5,6 @@ import Label from "@/Components/Form/Label.vue";
 import InputDiv from "@/Components/Form/InputDiv.vue";
 import {watch} from "vue";
 import Error from "@/Components/Form/Error.vue";
-import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
-
-const { generateAccessEmail, generateAccessPassword} = useEmployeeForm();
 
 const props = defineProps({
     formData: {
@@ -19,9 +16,6 @@ const props = defineProps({
         required: true
     },
 })
-
-props.formData.accessEmail = generateAccessEmail();
-props.formData.accessPassword = generateAccessPassword();
 
 const emit = defineEmits(['formUpdate']);
 watch(props.formData, (newValue) => {

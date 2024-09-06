@@ -28,6 +28,7 @@ const props = defineProps({
         required: true
     }
 })
+
 const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
 const stepCount = ref(1);
 const isActive = (display) => {
@@ -67,9 +68,11 @@ const saveChanges = () => {
 }
 watch(editProfile, () => {
     Object.assign(personalInformationFormData.value, props.employee.data)
-    Object.assign(professionalInformationFormData.value, props.employee.data.employment)
+    Object.assign(professionalInformationFormData.value, props.employee.data.employmentDetails)
     Object.assign(accountAccessFormData.value, props.employee.data.access)
 }, {immediate: true});
+
+console.log(professionalInformationFormData.value)
 </script>
 
 <template>
@@ -82,8 +85,8 @@ watch(editProfile, () => {
                         <img :src="profile" alt="profile" class="size-20">
                         <DivFlexCol>
                             <h1 class="text-lg font-bold"> {{ employee.data.fullName }}</h1>
-                            <Span class="text-xl">{{ employee.data.employment.position }}</Span>
-                            <Span class="text-xl">{{ employee.data.access.accessEmail}}</Span>
+                            <Span class="text-xl">{{ employee.data.employmentDetails.position.name }}</Span>
+                            <Span class="text-xl">{{ employee.data.employmentDetails.accessEmail}}</Span>
                         </DivFlexCol>
                     </DivFlexCenter>
                     <DivFlexCenter v-if="!editProfile" class="gap-3">
@@ -116,15 +119,15 @@ watch(editProfile, () => {
                         </DivFlexCenter>
 
                         <PersonalInformationView
-                                                 :personalInformationForm="personalInformationFormData"
-                                                 :edit="editProfile"
-                                                 v-if="stepCount === 1"/>
-                        <ProfessionalInformationView :professionalInformationForm="professionalInformationFormData"
-                                                     :edit="editProfile"
-                                                     v-if="stepCount === 2"/>
-                        <AccountAccessView :accountAccessForm="accountAccessFormData"
-                                           :edit="editProfile"
-                                           v-if="stepCount === 3"/>
+                            :personalInformationForm="personalInformationFormData"
+                            :edit="editProfile"
+                            v-if="stepCount === 1"/>
+<!--                        <ProfessionalInformationView :professionalInformationForm="professionalInformationFormData"-->
+<!--                                                     :edit="editProfile"-->
+<!--                                                     v-if="stepCount === 2"/>-->
+<!--                        <AccountAccessView :accountAccessForm="accountAccessFormData"-->
+<!--                                           :edit="editProfile"-->
+<!--                                           v-if="stepCount === 3"/>-->
                     </DivFlexCol>
                 </div>
             </DivFlexCol>

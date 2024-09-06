@@ -31,10 +31,12 @@ export function useEmployeeForm(){
 
     const professionalInformationFormData = useRemember({
         joiningDate: '',
-        department: '',
-        position: '',
-        team: '',
+        department_id: '',
+        position_id: '',
+        team_id: '',
         ratePerHour: '',
+        accessEmail: '',
+        accessPassword: ''
     }, 'ProfessionalInformation')
 
     const accountAccessFormData = useRemember({

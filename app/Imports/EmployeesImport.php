@@ -37,10 +37,6 @@ class EmployeesImport implements ToCollection, WithHeadingRow
                     // Add other fields as necessary
                 ]);
 
-                $employee->access()->create([
-                    'accessEmail' => $row['accessemail'],
-                    'accessPassword' => $row['accesspassword'], // Remember to hash the password
-                ]);
             });
         }
     }

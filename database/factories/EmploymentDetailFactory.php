@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Employee;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,12 @@ class EmploymentDetailFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'joiningDate' => $this->faker->date(),
+            'ratePerHour' => $this->faker->randomFloat(2, 10, 20),
+            'accessEmail' => $this->faker->email(),
+            'accessPassword' => $this->faker->password(),
         ];
     }
 }
+
+

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,14 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employment_details', function (Blueprint $table) {
+        Schema::create('teams', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Employee::class)->constrained()->cascadeOnDelete();
-            $table->date('joiningDate');
-            $table->string('department');
-            $table->string('position');
-            $table->string('team');
-            $table->string('ratePerHour');
+            $table->foreignIdFor(Department::class)->constrained()->cascadeOnDelete();
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employment_details');
+        Schema::dropIfExists('managers');
     }
 };

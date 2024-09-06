@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\EmploymentDetail;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -29,8 +28,7 @@ class EmployeeResource extends JsonResource
             'municipality' => $this->municipality,
             'cityOrProvince' => $this->cityOrProvince,
             'postalCode' => $this->postalCode,
-            'employment' => EmploymentDetailResource::make($this->whenLoaded('employment')),
-            'access' => EmployeeAccessResource::make($this->whenLoaded('access')),
+            'employmentDetails' => new EmploymentDetailResource($this->whenLoaded('employmentDetails')),
         ];
     }
 }
