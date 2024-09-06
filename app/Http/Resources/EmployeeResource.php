@@ -31,4 +31,20 @@ class EmployeeResource extends JsonResource
             'employmentDetails' => new EmploymentDetailResource($this->whenLoaded('employmentDetails')),
         ];
     }
+
+    public function toFlattenedArray(Request $request): array
+    {
+        $array = $this->toArray($request);
+        if ($this->relationLoaded('employmentDetails')) {
+            $employmentDetails = $this->employmentDetails;
+            $array = array_merge($array, [
+                'position_id' => $employmentDetails->position->id ?? null,
+                'team_id' => $employmentDetails->team->id ?? null,
+                'department_id' => $employmentDetails->team->department->id ?? null,
+                'joiningDate' => $employmentDetails->joiningDate,
+            ]);
+        }
+        unset($array['employmentDetails']);
+        return $array;
+    }
 }

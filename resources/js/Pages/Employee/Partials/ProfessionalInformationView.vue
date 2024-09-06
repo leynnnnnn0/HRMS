@@ -3,8 +3,9 @@ import Input from "@/Components/Form/Input.vue";
 import Label from "@/Components/Form/Label.vue";
 import Select from "@/Components/Form/Select.vue";
 import InputDiv from "@/Components/Form/InputDiv.vue";
+import {ref, watch} from "vue";
 
-defineProps({
+const props = defineProps({
     professionalInformationForm: {
         type: Object,
         required: true
@@ -12,8 +13,29 @@ defineProps({
     edit: {
         type: Boolean,
         default: false
+    },
+    departments: {
+        type: Array,
+        required: true
     }
 })
+
+const positions = ref({});
+const teams = ref({});
+watch(() => props.professionalInformationForm.department.id, () => {
+    axios.get(`/api/positions?departmentId=${props.professionalInformationForm.department.id}`)
+        .then(result => {
+            positions.value = result.data.data
+        })
+        .catch(err => console.log(err))
+
+    axios.get(`/api/teams?departmentId=${props.professionalInformationForm.department.id}`)
+        .then(result => {
+            teams.value = result.data.data
+        })
+        .catch(err => console.log(err))
+}, {immediate: true})
+
 
 </script>
 
@@ -25,25 +47,20 @@ defineProps({
         </InputDiv>
         <InputDiv>
             <Label>Department</Label>
-            <Select v-model="professionalInformationForm.department" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit">
-                <option value="HR">HR</option>
-                <option value="Design">Design</option>
-                <option value="Developer">Developer</option>
+            <Select v-model="professionalInformationForm.department.id" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit">
+                <option v-for="department in departments" :value="department.id">{{ department.name }}</option>
             </Select>
         </InputDiv>
         <InputDiv>
             <Label>Position</Label>
-            <Select v-model="professionalInformationForm.position" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit">
-                <option value="Admin">Admin</option>
-                <option value="UI Designer">UI Designer</option>
-                <option value="Web Developer">Web Developer</option>
+            <Select v-model="professionalInformationForm.position.id" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit">
+                <option v-for="position in positions" :value="position.id">{{ position.name }}</option>
             </Select>
         </InputDiv>
         <InputDiv>
             <Label>Team</Label>
-            <Select v-model="professionalInformationForm.team" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit">
-                <option value="Allan">Allan</option>
-                <option value="Jay">Jay</option>
+            <Select v-model="professionalInformationForm.team.id" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit">
+                <option v-for="team in teams" :value="team.id">{{ team.name }}</option>
             </Select>
         </InputDiv>
         <InputDiv>

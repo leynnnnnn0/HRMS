@@ -12,24 +12,27 @@ import lock from "@/Images/Icons/lock.svg";
 import user from "@/Images/Icons/user.svg";
 import {ref, watch} from "vue";
 import PersonalInformationView from "@/Pages/Employee/Partials/PersonalInformationView.vue";
-import ProfessionalInformationView from "@/Pages/Employee/Partials/ProfessionalInformationView.vue";
-import AccountAccessView from "@/Pages/Employee/Partials/AccountAccessView.vue";
 import TransparentButton from "@/Components/TransparentButton.vue";
 import Button from "@/Components/Button.vue";
 import ButtonLink from "@/Components/ButtonLink.vue";
 import {Head, router} from "@inertiajs/vue3";
 import {useEmployeeForm} from "@/Composables/useEmployeeForm.js";
-import {toast} from "vue3-toastify";
 import {push} from "notivue";
+import ProfessionalInformationView from "@/Pages/Employee/Partials/ProfessionalInformationView.vue";
+import AccountAccessView from "@/Pages/Employee/Partials/AccountAccessView.vue";
 
 const props = defineProps({
     employee: {
         type: Object,
         required: true
+    },
+    departments: {
+        type: Object,
+        required: true
     }
 })
 
-const { personalInformationFormData, professionalInformationFormData, accountAccessFormData } = useEmployeeForm();
+const { personalInformationFormData, professionalInformationFormData } = useEmployeeForm();
 const stepCount = ref(1);
 const isActive = (display) => {
     return stepCount.value === display;
@@ -41,7 +44,6 @@ const saveChanges = () => {
     const data = {
         ...personalInformationFormData.value,
         ...professionalInformationFormData.value,
-        ...accountAccessFormData.value
     }
     router.put(route('employees.update', props.employee.data.id), data,{
         onSuccess: page => {
@@ -53,12 +55,13 @@ const saveChanges = () => {
             })
         },
         onError: err => {
-            toast.error({
+            push.error({
                 message: 'Internal Service Error.',
                 props: {
                     result: true
                 }
             })
+            console.log(err);
         },
         onFinish: visit => {
             isLoading.value = false
@@ -69,10 +72,12 @@ const saveChanges = () => {
 watch(editProfile, () => {
     Object.assign(personalInformationFormData.value, props.employee.data)
     Object.assign(professionalInformationFormData.value, props.employee.data.employmentDetails)
-    Object.assign(accountAccessFormData.value, props.employee.data.access)
+    professionalInformationFormData.value.department_id = props.employee.data.employmentDetails.department.id.toString()
+    professionalInformationFormData.value.position_id = props.employee.data.employmentDetails.position.id.toString()
+    professionalInformationFormData.value.team_id = props.employee.data.employmentDetails.team.id.toString()
 }, {immediate: true});
 
-console.log(professionalInformationFormData.value)
+
 </script>
 
 <template>
@@ -122,12 +127,13 @@ console.log(professionalInformationFormData.value)
                             :personalInformationForm="personalInformationFormData"
                             :edit="editProfile"
                             v-if="stepCount === 1"/>
-<!--                        <ProfessionalInformationView :professionalInformationForm="professionalInformationFormData"-->
-<!--                                                     :edit="editProfile"-->
-<!--                                                     v-if="stepCount === 2"/>-->
-<!--                        <AccountAccessView :accountAccessForm="accountAccessFormData"-->
-<!--                                           :edit="editProfile"-->
-<!--                                           v-if="stepCount === 3"/>-->
+                        <ProfessionalInformationView :professionalInformationForm="professionalInformationFormData"
+                                                     :edit="editProfile"
+                                                     :departments="departments.data"
+                                                     v-if="stepCount === 2"/>
+                        <AccountAccessView :accountAccessForm="professionalInformationFormData"
+                                           :edit="editProfile"
+                                           v-if="stepCount === 3"/>
                     </DivFlexCol>
                 </div>
             </DivFlexCol>

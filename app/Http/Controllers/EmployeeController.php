@@ -59,7 +59,8 @@ class EmployeeController extends Controller
    public function show(Employee $employee)
    {
        return inertia('Employee/Show', [
-           'employee' => new EmployeeResource($employee->load(['employmentDetails.team.department', 'employmentDetails.position']))
+           'employee' => new EmployeeResource($employee->load(['employmentDetails.team.department', 'employmentDetails.position'])),
+           'departments' => DepartmentResource::collection(Department::all()),
        ]);
    }
 
@@ -89,14 +90,15 @@ class EmployeeController extends Controller
    {
        $personalInformation = $request->validate((new StoreEmployeePersonalInformationRequest())->rules());
        $professionalInformation = $request->validate((new StoreEmployeeProfessionalInformationRequest())->rules());
-
+       unset($professionalInformation['department_id']);
        $employee->update($personalInformation);
        $employee->employmentDetails()->update($professionalInformation);
-       $employee->save();
 
-       $employee = new EmployeeResource(Employee::find($employee->id));
+
+       $employee->load('employmentDetails');
        return inertia('Employee/Show', [
-           'employee' => new EmployeeResource($employee)
+           'employee' => new EmployeeResource($employee->load(['employmentDetails.team.department', 'employmentDetails.position'])),
+           'departments' => DepartmentResource::collection(Department::all()),
        ]);
 
    }

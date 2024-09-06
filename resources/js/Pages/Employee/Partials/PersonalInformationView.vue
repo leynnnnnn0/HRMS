@@ -4,7 +4,6 @@ import Input from "@/Components/Form/Input.vue";
 import Label from "@/Components/Form/Label.vue";
 import InputDiv from "@/Components/Form/InputDiv.vue";
 import Select from "@/Components/Form/Select.vue";
-import {watch} from "vue";
 
 const props = defineProps({
     personalInformationForm: {
@@ -16,8 +15,6 @@ const props = defineProps({
         default: false
     }
 })
-
-
 
 </script>
 

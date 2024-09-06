@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreEmployeeProfessionalInformationRequest extends FormRequest
 {
@@ -27,7 +28,7 @@ class StoreEmployeeProfessionalInformationRequest extends FormRequest
             'position_id' => ['required', 'string', 'exists:positions,id'],
             'team_id' => ['required', 'string', 'exists:teams,id'],
             'ratePerHour' => ['required', 'numeric'],
-            'accessEmail' => ['required', 'email', 'unique:employment_details,accessEmail'],
+            'accessEmail' => ['required', 'email'],
             'accessPassword' => ['required', 'string', 'min:8'],
         ];
     }
