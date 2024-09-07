@@ -41,7 +41,7 @@ const props = defineProps({
         </InputDiv>
         <InputDiv>
             <Label>Date of Birth</Label>
-            <Input v-model="personalInformationForm.dateOfBirth" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
+            <Input type="date" v-model="personalInformationForm.dateOfBirth" :class="{ 'border-none p-0 text-primary-font' : !edit}" :disabled="!edit"/>
         </InputDiv>
         <InputDiv>
             <Label>Email</Label>

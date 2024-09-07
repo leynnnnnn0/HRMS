@@ -30,7 +30,7 @@ class StoreEmployeeProfessionalInformationRequest extends FormRequest
             'position_id' => ['required', 'string', 'exists:positions,id'],
             'team_id' => ['required', 'string', 'exists:teams,id'],
             'ratePerHour' => ['required', 'numeric'],
-            'accessEmail' => ['required', 'email', Rule::unique('employment_details', 'accessEmail')->ignore($this->employmentDetails['employee_id'])],
+            'accessEmail' => ['required', 'email', Rule::unique('employment_details', 'accessEmail')->ignore($this->route('employee')->employmentDetails->id ?? null)],
             'accessPassword' => ['required', 'string', 'min:8'],
         ];
     }
