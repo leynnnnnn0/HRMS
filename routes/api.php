@@ -15,8 +15,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(EmployeeController::class)->group(function () {
         Route::post('/personal-information/store', 'validatePersonalInformation');
+        Route::post('/personal-information/store/{data}', 'validatePersonalInformation');
         Route::post('/professional-information/store', 'validateProfessionalInformation');
-        Route::post('/account-access/store', 'validateAccountAccess');
+        Route::post('/professional-information/store/{data}', 'validateProfessionalInformation');
     });
 });
 

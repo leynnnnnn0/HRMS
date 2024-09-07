@@ -38,7 +38,6 @@ const next = () => {
         validateInputs('/api/personal-information/store', personalInformationFormData, formErrors);
     if(stepCount.value === 2)
         validateInputs('/api/professional-information/store', professionalInformationFormData, formErrors);
-    console.log(professionalInformationFormData);
 }
 const validateInputs = (url, data, errorsForm) => {
     isLoading.value = true;
@@ -145,7 +144,7 @@ const handleExcelFileUpload = () => {
                 <div class="flex h-full justify-end items-center gap-2 col-span-2">
                     <ButtonLink v-if="stepCount === 1" :href="route('employees.index')">Cancel</ButtonLink>
                     <TransparentButton v-if="stepCount > 1" @click="stepCount = stepCount - 1">Back</TransparentButton>
-                    <Button v-if="stepCount < 3" @click="next" :isLoading="isLoading">
+                    <Button v-if="stepCount < 3" @click="next" :isLoading="isLoading" :disabled="isLoading">
                         Next
                     </Button>
                     <Button v-if="stepCount === 3" @click="createEmployee">Add</Button>

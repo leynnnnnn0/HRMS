@@ -9,6 +9,7 @@ use App\Http\Requests\Api\StoreEmployeeProfessionalInformationRequest;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
+
 {
     public function validatePersonalInformation(StoreEmployeePersonalInformationRequest $request)
     {
@@ -20,8 +21,5 @@ class EmployeeController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function validateAccountAccess(StoreEmployeeAccountAccessRequest $request)
-    {
-        return response()->json(['success' => true]);
-    }
+
 }
