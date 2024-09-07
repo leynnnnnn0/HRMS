@@ -86,11 +86,10 @@ class EmployeeController extends Controller
        return redirect()->route('employees.index');
    }
 
-   public function update(StoreEmployeePersonalInformationRequest $request, StoreEmployeeProfessionalInformationRequest $preq, Employee $employee)
+   public function update(StoreEmployeePersonalInformationRequest $employeePersonalInformationRequest, StoreEmployeeProfessionalInformationRequest $storeEmployeeProfessionalInformationRequest, Employee $employee)
    {
-       $request->validated();
-       dd($preq);
-       $professionalInformation = $request->validate((new StoreEmployeeProfessionalInformationRequest())->rules());
+       $personalInformation = $employeePersonalInformationRequest->validated();
+       $professionalInformation = $storeEmployeeProfessionalInformationRequest->validated();
        unset($professionalInformation['department_id']);
        $employee->update($personalInformation);
        $employee->employmentDetails()->update($professionalInformation);

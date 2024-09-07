@@ -16,6 +16,7 @@ class EmploymentDetailResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'employee_id' => $this->employee_id,
             'department' => $this->when($this->team && $this->team->department, function () {
                 return new DepartmentResource($this->team->department);
             }),
