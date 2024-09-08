@@ -20,7 +20,7 @@ console.log(props.departments)
     <section class="flex-1">
         <DivFlexCol class="grid grid-cols-2 gap-5 p-5 w-full h-full rounded-lg border border-gray/20">
             <DepartmentOverview v-for="department in departments" members-count="20" :department="department.name">
-                <EmployeeOverview v-for="employee in department.employees" position="unknown" :full-name="employee.firstName + ' ' + employee.lastName"/>
+                <EmployeeOverview v-for="details in department.employee_details" position="unknown" :full-name="details.employee.firstName + ' ' + details.employee.lastName"/>
             </DepartmentOverview>
         </DivFlexCol>
 
