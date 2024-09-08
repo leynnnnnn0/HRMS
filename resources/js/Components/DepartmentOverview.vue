@@ -12,6 +12,10 @@ defineProps({
     membersCount: {
         type: String,
         required: true
+    },
+    to: {
+        type: String,
+        required: true
     }
 })
 </script>
@@ -27,7 +31,7 @@ defineProps({
                             {{ membersCount }} members
                     </span>
             </DivFlexCol>
-            <ButtonLink class="cursor-pointer text-primary text-md border-none">View All</ButtonLink>
+            <ButtonLink :href="to" class="cursor-pointer text-primary text-md border-none">View All</ButtonLink>
         </DivFlexCenter>
         <DivFlexCol class="divide-y-2 max-h-fit">
             <slot></slot>

@@ -23,7 +23,10 @@ Route::get('/dashboard', function () {
 Route::resource('employees', EmployeeController::class);
 Route::post('/employees/import', [EmployeeController::class, 'import'])->name('employees.import');
 
-Route::resource('departments', DepartmentController::class);
+Route::controller(DepartmentController::class)->group(function () {
+    Route::get('departments', 'index')->name('departments.index');
+    Route::get('departments/show/{id}', 'show')->name('departments.show');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

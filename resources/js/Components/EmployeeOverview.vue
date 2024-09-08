@@ -5,6 +5,7 @@ import caretRight from "@/Images/Icons/caretRight.svg";
 import DivFlexCenter from "@/Components/Divs/DivFlexCenter.vue";
 import ButtonLink from "@/Components/ButtonLink.vue";
 import DivFlexCol from "@/Components/Divs/DivFlexCol.vue";
+import Span from "@/Components/Text/Span.vue";
 
 defineProps({
     fullName: {
@@ -29,7 +30,7 @@ defineProps({
                 </Span>
             </DivFlexCol>
             </DivFlexCenter>
-            <ButtonLink class="border-none">
+            <ButtonLink class="border-none" :href="route('dashboard')">
                 <img :src="caretRight" alt="icon">
             </ButtonLink>
     </DivFlexCenter>
