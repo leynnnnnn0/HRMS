@@ -21,7 +21,7 @@ class EmployeeController extends Controller
         $employees = Employee::query()
             ->with(['employmentDetails.team.department', 'employmentDetails.position']) // Eager load related data
             ->when(request('search'), function ($query) {
-                $query->where('firstName', 'like', '%' . request('search') . '%');
+                $query->whereAny(['firstName', 'lastName'], 'like', '%' . request('search') . '%');
             })
             ->paginate(8)
             ->through(fn($item) => [
