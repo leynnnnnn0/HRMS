@@ -40,6 +40,9 @@ const isActive = (display) => {
 const isLoading = ref(false);
 const editProfile = ref(false);
 const saveChanges = () => {
+    professionalInformationFormData.value.department_id = professionalInformationFormData.value.department.id;
+    professionalInformationFormData.value.team_id = professionalInformationFormData.value.team.id;
+    professionalInformationFormData.value.position_id = professionalInformationFormData.value.position.id;
     isLoading.value = true;
     const data = {
         ...personalInformationFormData.value,

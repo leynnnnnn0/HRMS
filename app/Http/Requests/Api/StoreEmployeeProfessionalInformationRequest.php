@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Api;
 
-use http\Env\Request;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

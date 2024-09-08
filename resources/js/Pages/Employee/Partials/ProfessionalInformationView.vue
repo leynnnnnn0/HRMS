@@ -22,6 +22,7 @@ const props = defineProps({
 
 const positions = ref({});
 const teams = ref({});
+
 watch(() => props.professionalInformationForm.department.id, () => {
     axios.get(`/api/positions?departmentId=${props.professionalInformationForm.department.id}`)
         .then(result => {
