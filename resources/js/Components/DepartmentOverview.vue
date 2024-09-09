@@ -33,7 +33,7 @@ defineProps({
             </DivFlexCol>
             <ButtonLink :href="to" class="cursor-pointer text-primary text-md border-none">View All</ButtonLink>
         </DivFlexCenter>
-        <DivFlexCol class="divide-y-2 max-h-fit">
+        <DivFlexCol class="overflow-y-auto divide-y-2 max-h-fit">
             <slot></slot>
         </DivFlexCol>
     </DivFlexCol>

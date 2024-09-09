@@ -16,6 +16,10 @@ defineProps({
         type: String,
         required: true
     },
+    route: {
+        type: String,
+        require: true
+    }
 })
 </script>
 
@@ -30,7 +34,7 @@ defineProps({
                 </Span>
             </DivFlexCol>
             </DivFlexCenter>
-            <ButtonLink class="border-none" :href="route('dashboard')">
+            <ButtonLink class="border-none" :href="route">
                 <img :src="caretRight" alt="icon">
             </ButtonLink>
     </DivFlexCenter>

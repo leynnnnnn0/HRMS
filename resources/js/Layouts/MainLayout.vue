@@ -2,7 +2,7 @@
 import SideMenu from "@/Components/SideMenu.vue";
 import DivFlexCol from "@/Components/Divs/DivFlexCol.vue";
 import {Notification, NotificationProgress, Notivue} from "notivue";
-import Button from "@/Components/Button.vue";
+
 
 </script>
 

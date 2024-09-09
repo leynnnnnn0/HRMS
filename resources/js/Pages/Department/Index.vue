@@ -19,7 +19,7 @@ const props = defineProps({
     <section class="flex-1">
         <DivFlexCol class="grid grid-cols-2 gap-5 p-5 w-full h-full rounded-lg border border-gray/20">
             <DepartmentOverview v-for="department in departments" :members-count="size(department.employee_details).toString()" :to="route('departments.show', department.id)" :department="department.name">
-                <EmployeeOverview v-for="details in department.employee_details" position="unknown" :full-name="details.employee.firstName + ' ' + details.employee.lastName"/>
+                <EmployeeOverview v-for="details in department.employee_details" position="unknown" :full-name="details.employee.firstName + ' ' + details.employee.lastName" :route="route('employees.show', details.employee.id)"/>
             </DepartmentOverview>
         </DivFlexCol>
 

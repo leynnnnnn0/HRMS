@@ -20,7 +20,11 @@ import Button from "@/Components/Button.vue";
 import {ref, watch} from "vue";
 import {Head} from "@inertiajs/vue3";
 import {throttle} from "lodash";
+import {useEmployeeAction} from "@/Composables/useEmployeeAction.js";
+import {useNotification} from "@/Composables/useNotification.js";
 
+const { destroyEmployeeData } = useEmployeeAction();
+const { pushConfirmation } = useNotification();
 
 defineProps({
     employees: {
@@ -28,30 +32,6 @@ defineProps({
         required: true
     }
 })
-
-const destroyEmployeeData = (id, item) => {
-    item.clear();
-    router.delete(route('employees.destroy', id),{
-        preserveScroll: true,
-        onSuccess: () => push.success({
-            message: 'Deleted Successfully',
-            props: {
-                result: true
-            }
-        }),
-        onError: () => toast.error('Something Went Wrong:(')
-    })
-}
-
-const pushConfirmation = (id) => {
-    push.info({
-        message: "Are you sure you want to delete this employee?",
-        props: {
-            delete: true,
-            id: id,
-        }
-    })
-}
 
 let search = ref(usePage().props.filters.search);
 
@@ -71,7 +51,7 @@ watch(search, throttle(function(value){
                 <strong>{{ item.message }}</strong>
                 <div class="flex justify-end gap-2">
                     <Button @click="item.clear" class="bg-black/50 border border-gray-500 text-sm">Cancel</Button>
-                    <Button @click="destroyEmployeeData(item.props.id, item)" class="text-sm bg-red-500">Confirm</Button>
+                    <Button @click="destroyEmployeeData(item.props.id, item, route('employees.destroy', item.props.id))" class="text-sm bg-red-500">Confirm</Button>
                 </div>
             </div>
         </Notivue>

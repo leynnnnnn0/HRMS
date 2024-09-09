@@ -17,7 +17,7 @@ class EmployeeSeeder extends Seeder
     public function run(): void
     {
         // We want to create an employee and after creating one we want to associate an employment details to it
-        Employee::factory(10)
+        Employee::factory(100)
             ->has(EmploymentDetail::factory()->state(function (array $attributes, Employee $employee) {
                 return [
                     'team_id' => Team::inRandomOrder()->first()->id,

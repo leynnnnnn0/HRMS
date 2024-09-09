@@ -25,4 +25,5 @@ class DepartmentController extends Controller
             'data' => $data
         ]);
     }
+
 }
