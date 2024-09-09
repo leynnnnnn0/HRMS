@@ -28,6 +28,8 @@ Route::controller(DepartmentController::class)->group(function () {
     Route::get('departments/show/{id}', 'show')->name('departments.show');
 });
 
+Route::resource('attendance', \App\Http\Controllers\AttendanceController::class);
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

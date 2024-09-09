@@ -9,6 +9,8 @@ import activeAllEmployees from "@/Images/Icons/activeAllEmployees.svg";
 import activeDashboard from "@/Images/Icons/activeDashboard.svg";
 import departments from "@/Images/Icons/community.svg";
 import activeDepartments from "@/Images/Icons/connection.svg";
+import attendance from "@/Images/Icons/attendance.svg";
+import attendanceActive from "@/Images/Icons/attendanceActive.svg";
 import {usePage} from "@inertiajs/vue3";
 
 const isActive = (route) => {
@@ -36,6 +38,10 @@ const isActive = (route) => {
                          :icon="departments"
                          :activeIcon="activeDepartments"
                          :href="route('departments.index')">Departments</SidebarLink>
+            <SidebarLink :active="isActive('/attendance')"
+                         :icon="attendance"
+                         :activeIcon="attendanceActive"
+                         :href="route('attendance.index')">Attendance</SidebarLink>
         </DivFlexCol>
     </div>
 </template>
