@@ -6,6 +6,8 @@ import notification from "@/Images/Icons/notification.svg";
 import IconButton from "@/Components/IconButton.vue";
 import profile from "@/Images/Profile/Profile.png";
 import dropDown from "@/Images/Icons/dropDown.svg";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import Button from "@/Components/Button.vue";
 
 defineProps({
     heading: {
@@ -30,6 +32,7 @@ defineProps({
             </span>
         </DivFlexCol>
         <DivFlexCenter class="gap-2">
+            <Button>Time In</Button>
             <IconButton :icon="notification"/>
             <DivFlexCenter class="border border-gray/50 rounded-lg p-1 gap-2">
                 <img class="size-8"

@@ -25,9 +25,9 @@ class StoreEmployeeProfessionalInformationRequest extends FormRequest
     {
         return [
             'joiningDate' => ['required', 'date', 'date_format:Y-m-d'],
-            'department_id' => ['required', 'string', 'exists:departments,id'],
-            'position_id' => ['required', 'string', 'exists:positions,id'],
-            'team_id' => ['required', 'string', 'exists:teams,id'],
+            'department_id' => ['required', 'exists:departments,id'],
+            'position_id' => ['required', 'exists:positions,id'],
+            'team_id' => ['required', 'exists:teams,id'],
             'ratePerHour' => ['required', 'numeric'],
             'accessEmail' => ['required', 'email', Rule::unique('employment_details', 'accessEmail')->ignore($this->route('employee')->employmentDetails->id ?? null)],
             'accessPassword' => ['required', 'string', 'min:8'],
