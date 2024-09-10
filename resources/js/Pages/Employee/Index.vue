@@ -14,7 +14,6 @@ import view from "@/Images/Icons/view.svg";
 import trash from "@/Images/Icons/trash.svg";
 import PrimaryButtonLink from "@/Components/PrimaryButtonLink.vue";
 import {Link, router, usePage} from "@inertiajs/vue3";
-import {toast} from "vue3-toastify";
 import {Notivue, push} from 'notivue'
 import Button from "@/Components/Button.vue";
 import {ref, watch} from "vue";
